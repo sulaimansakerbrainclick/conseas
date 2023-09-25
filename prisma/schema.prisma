@@ -1,0 +1,334 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// datasource db {
+//   provider          = "postgresql"
+//   url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+//   directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+//   shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations}
+// }
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_URL")
+}
+
+model User {
+  id                           String               @id @default(uuid())
+  stripeCustomerId             String?
+  stripeCustomerCreateResponse Json?
+  firstName                    String
+  lastName                     String
+  dateOfBirth                  DateTime?
+  gender                       Gender?
+  phone                        String               @unique
+  email                        String               @unique
+  image                        String?
+  password                     String
+  isEmailVerified              Boolean              @default(false)
+  isPhoneVerified              Boolean              @default(false)
+  isActive                     Boolean              @default(true)
+  role                         Role
+  Answer                       Answer[]
+  appointments                 Appointment[]
+  ForgetPasswordToken          ForgetPasswordToken?
+  notification                 Notification[]
+  Question                     Question[]
+  requests                     Request[]
+  userChartSubscription        UserChart[]
+  Invoice                      Invoice[]
+  createdAt                    DateTime             @default(now())
+  updatedAt                    DateTime?            @updatedAt
+  deletedAt                    DateTime?
+}
+
+model Chart {
+  id                          String      @id @default(uuid())
+  nameEn                      String      @db.VarChar(500)
+  nameAr                      String      @db.VarChar(500)
+  descriptionEn               String      @db.VarChar(500)
+  descriptionAr               String      @db.VarChar(500)
+  price                       Int
+  interval                    String
+  intervalCount               Int
+  stripeProductId             String?
+  stripePriceId               String?
+  stripePriceCreateResponse   Json?
+  stripeProductCreateResponse Json?
+  userChart                   UserChart[]
+  createdAt                   DateTime    @default(now())
+  updatedAt                   DateTime?   @updatedAt
+  deletedAt                   DateTime?
+}
+
+model UserChart {
+  id                               String    @id @default(uuid())
+  chartId                          String
+  userId                           String
+  stripeSubscriptionId             String
+  stripeSubscriptionCreateResponse Json
+  status                           String
+  currentPeriodStart               DateTime
+  currentPeriodEnd                 DateTime
+  chart                            Chart     @relation(fields: [chartId], references: [id])
+  user                             User      @relation(fields: [userId], references: [id])
+  createdAt                        DateTime  @default(now())
+  updatedAt                        DateTime? @updatedAt
+  deletedAt                        DateTime?
+}
+
+model Invoice {
+  id         String   @id @default(uuid())
+  stripeData Json
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+model ForgetPasswordToken {
+  id        String   @id @default(uuid())
+  ip        String?
+  userId    String   @unique
+  token     String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model ContactUs {
+  id        String    @id @default(uuid())
+  name      String
+  phone     String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model PhoneOtp {
+  id        String   @id @default(uuid())
+  ip        String?
+  phone     String   @unique
+  otp       String
+  createdAt DateTime @default(now())
+}
+
+model EmailToken {
+  id        String   @id @default(uuid())
+  ip        String?
+  email     String   @unique
+  token     String
+  createdAt DateTime @default(now())
+}
+
+model Request {
+  id                    String        @id @default(uuid())
+  firstName             String
+  lastName              String
+  dateOfBirth           DateTime?
+  gender                Gender?
+  phone                 String
+  email                 String
+  requestStatusId       String
+  medicalInformation    String
+  serviceId             String
+  patientId             String
+  myMedicalReport       String?
+  medicalReport         String?
+  stripepaymentIntentId String?
+  questions             Question[]
+  requestStatus         RequestStatus @relation(fields: [requestStatusId], references: [id])
+  patient               User          @relation(fields: [patientId], references: [id])
+  service               Service       @relation(fields: [serviceId], references: [id])
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime?     @updatedAt
+  deletedAt             DateTime?
+}
+
+model RequestStatus {
+  id      String    @id
+  nameEn  String
+  nameAr  String
+  Request Request[]
+}
+
+model Question {
+  id        String    @id @default(uuid())
+  text      String
+  requestId String
+  patientId String
+  answers   Answer[]
+  patient   User      @relation(fields: [patientId], references: [id])
+  request   Request   @relation(fields: [requestId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  text       String
+  questionId String
+  adminId    String
+  admin      User      @relation(fields: [adminId], references: [id])
+  question   Question  @relation(fields: [questionId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  deletedAt  DateTime?
+}
+
+model Service {
+  id                          String    @id @default(uuid())
+  price                       Int       @default(0)
+  nameEn                      String
+  nameAr                      String
+  shortDescriptionEn          String
+  shortDescriptionAr          String
+  descriptionEn               String
+  descriptionAr               String
+  image                       String?
+  whiteImage                  String?
+  isActive                    Boolean   @default(true)
+  parentId                    String?
+  stripeProductId             String?
+  stripePriceId               String?
+  stripePriceCreateResponse   Json?
+  stripeProductCreateResponse Json?
+  request                     Request[]
+  parent                      Service?  @relation("children", fields: [parentId], references: [id])
+  children                    Service[] @relation("children")
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime? @updatedAt
+  deletedAt                   DateTime?
+}
+
+model Appointment {
+  id                           String          @id @default(uuid())
+  firstName                    String
+  lastName                     String
+  phone                        String
+  email                        String
+  notes                        String
+  userId                       String?
+  appointmentappointmentTypeId String
+  user                         User?           @relation(fields: [userId], references: [id])
+  appointmentType              AppointmentType @relation(fields: [appointmentappointmentTypeId], references: [id])
+  createdAt                    DateTime        @default(now())
+  deletedAt                    DateTime?
+}
+
+model AppointmentType {
+  id          String        @id
+  nameEn      String
+  nameAr      String
+  Appointment Appointment[]
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  message   String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model Page {
+  id        String    @id
+  nameEn    String    @db.MediumText
+  nameAr    String    @db.MediumText
+  textEn    String    @db.MediumText
+  textAr    String    @db.MediumText
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Setting {
+  id        String    @id
+  value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Section {
+  id        String        @id
+  titleEn   String
+  titleAr   String
+  textEn    String        @db.MediumText
+  textAr    String        @db.MediumText
+  list      SectionItem[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime?     @updatedAt
+}
+
+model SectionItem {
+  id        String    @id @default(uuid())
+  titleEn   String?
+  titleAr   String?
+  textEn    String?
+  textAr    String?
+  image     String?
+  sectionId String
+  section   Section   @relation(fields: [sectionId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Testimonial {
+  id        String    @id @default(uuid())
+  nameEn    String
+  nameAr    String
+  textEn    String
+  textAr    String
+  image     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Doctor {
+  id                String    @id @default(uuid())
+  firstNameEn       String
+  lastNameEn        String
+  firstNameAr       String
+  lastNameAr        String
+  dateOfBirth       DateTime
+  gender            Gender
+  phone             String    @unique
+  email             String    @unique
+  location          String?
+  specializationEn  String
+  specializationAr  String
+  yearsOfExperience Int?
+  graduationDate    DateTime?
+  workplaceEn       String?
+  workplaceAr       String?
+  city              String?
+  country           String?
+  image             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime? @updatedAt
+}
+
+model EmailSubscription {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model Language {
+  id        String  @id @default(uuid())
+  key       String  @unique
+  isDefault Boolean @default(false)
+}
+
+enum Gender {
+  Male
+  Femelle
+}
+
+enum Role {
+  Patient
+  Admin
+}

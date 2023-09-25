@@ -1,0 +1,20 @@
+.hovered {
+  [class~="link"] {
+    color: white;
+    background-color: var(--color-1);
+  }
+
+  [class~="blue-image"] {
+    display: none;
+  }
+}
+
+.notHovered {
+  [class~="link"] {
+    background-color: white;
+  }
+
+  [class~="white-image"] {
+    display: none;
+  }
+}

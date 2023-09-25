@@ -1,0 +1,16 @@
+.button {
+  background: var(--color-1);
+  color: var(--white);
+  padding: 0.75rem;
+
+  z-index: 1;
+
+  position: fixed;
+  left: 30px;
+  bottom: 40px;
+
+  [dir="ltr"] & {
+    left: unset;
+    right: 30px;
+  }
+}

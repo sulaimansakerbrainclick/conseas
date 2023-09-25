@@ -1,0 +1,9 @@
+.carousel {
+  [class~="slick-next"]:before {
+    color: black;
+  }
+
+  [class~="slick-prev"]:before {
+    color: black;
+  }
+}

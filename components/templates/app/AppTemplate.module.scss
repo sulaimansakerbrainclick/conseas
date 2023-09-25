@@ -1,0 +1,8 @@
+@import "../../../styles/mixins.scss";
+
+.template {
+}
+
+.header {
+  @include header;
+}
