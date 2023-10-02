@@ -14,7 +14,8 @@ async function saveSession(req: NextApiRequest, res: NextApiResponse) {
     image: session.user.image,
     firstName: session.user.firstName,
     lastName: session.user.lastName,
-    role: session.user.role,
+    roleId: session.user.roleId,
+    email: session.user.email,
   };
 
   try {

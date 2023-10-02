@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (method === "PUT") {
     const requestStatus = await prisma.requestStatus.findFirst({
       where: {
-        id: body.requestStatusId,
+        id: body.statusId,
       },
     });
 
@@ -32,8 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         id: query.id as string,
       },
       data: {
-        requestStatus: {
-          connect: { id: body.requestStatusId as string },
+        status: {
+          connect: { id: body.statusId as string },
         },
       },
     });

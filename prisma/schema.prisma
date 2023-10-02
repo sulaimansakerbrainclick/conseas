@@ -29,7 +29,8 @@ model User {
   isEmailVerified              Boolean              @default(false)
   isPhoneVerified              Boolean              @default(false)
   isActive                     Boolean              @default(true)
-  role                         Role
+  roleId                       String
+  role                         Role                 @relation(fields: [roleId], references: [id])
   Answer                       Answer[]
   appointments                 Appointment[]
   ForgetPasswordToken          ForgetPasswordToken?
@@ -43,39 +44,53 @@ model User {
   deletedAt                    DateTime?
 }
 
+model Role {
+  id   String @id
+  name String
+  User User[]
+}
+
 model Chart {
-  id                          String      @id @default(uuid())
-  nameEn                      String      @db.VarChar(500)
-  nameAr                      String      @db.VarChar(500)
-  descriptionEn               String      @db.VarChar(500)
-  descriptionAr               String      @db.VarChar(500)
-  price                       Int
-  interval                    String
-  intervalCount               Int
-  stripeProductId             String?
-  stripePriceId               String?
-  stripePriceCreateResponse   Json?
-  stripeProductCreateResponse Json?
-  userChart                   UserChart[]
-  createdAt                   DateTime    @default(now())
-  updatedAt                   DateTime?   @updatedAt
-  deletedAt                   DateTime?
+  id                    String       @id @default(uuid())
+  nameEn                String       @db.VarChar(500)
+  nameAr                String       @db.VarChar(500)
+  descriptionEn         String       @db.VarChar(500)
+  descriptionAr         String       @db.VarChar(500)
+  stripeProductId       String?
+  stripeProductResponse Json?
+  prices                ChartPrice[]
+  userChart             UserChart[]
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime?    @updatedAt
+  deletedAt             DateTime?
+}
+
+model ChartPrice {
+  id                  String    @id @default(uuid())
+  stripePriceId       String
+  stripePriceResponse Json
+  chartId             String
+  isDefault           Boolean   @default(false)
+  Chart               Chart     @relation(fields: [chartId], references: [id])
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime? @updatedAt
+  deletedAt           DateTime?
 }
 
 model UserChart {
-  id                               String    @id @default(uuid())
-  chartId                          String
-  userId                           String
-  stripeSubscriptionId             String
-  stripeSubscriptionCreateResponse Json
-  status                           String
-  currentPeriodStart               DateTime
-  currentPeriodEnd                 DateTime
-  chart                            Chart     @relation(fields: [chartId], references: [id])
-  user                             User      @relation(fields: [userId], references: [id])
-  createdAt                        DateTime  @default(now())
-  updatedAt                        DateTime? @updatedAt
-  deletedAt                        DateTime?
+  id                         String    @id @default(uuid())
+  chartId                    String
+  userId                     String
+  stripeSubscriptionId       String
+  stripeSubscriptionResponse Json
+  status                     String
+  currentPeriodStart         DateTime
+  currentPeriodEnd           DateTime
+  chart                      Chart     @relation(fields: [chartId], references: [id])
+  user                       User      @relation(fields: [userId], references: [id])
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime? @updatedAt
+  deletedAt                  DateTime?
 }
 
 model Invoice {
@@ -103,6 +118,7 @@ model ContactUs {
   subject   String
   message   String
   createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
   deletedAt DateTime?
 }
 
@@ -126,19 +142,19 @@ model Request {
   id                    String        @id @default(uuid())
   firstName             String
   lastName              String
-  dateOfBirth           DateTime?
-  gender                Gender?
+  dateOfBirth           DateTime
+  gender                Gender
   phone                 String
   email                 String
-  requestStatusId       String
+  statusId              String
   medicalInformation    String
   serviceId             String
   patientId             String
   myMedicalReport       String?
   medicalReport         String?
-  stripepaymentIntentId String?
+  stripePaymentIntentId String?
   questions             Question[]
-  requestStatus         RequestStatus @relation(fields: [requestStatusId], references: [id])
+  status                RequestStatus @relation(fields: [statusId], references: [id])
   patient               User          @relation(fields: [patientId], references: [id])
   service               Service       @relation(fields: [serviceId], references: [id])
   createdAt             DateTime      @default(now())
@@ -179,43 +195,43 @@ model Answer {
 }
 
 model Service {
-  id                          String    @id @default(uuid())
-  price                       Int       @default(0)
-  nameEn                      String
-  nameAr                      String
-  shortDescriptionEn          String
-  shortDescriptionAr          String
-  descriptionEn               String
-  descriptionAr               String
-  image                       String?
-  whiteImage                  String?
-  isActive                    Boolean   @default(true)
-  parentId                    String?
-  stripeProductId             String?
-  stripePriceId               String?
-  stripePriceCreateResponse   Json?
-  stripeProductCreateResponse Json?
-  request                     Request[]
-  parent                      Service?  @relation("children", fields: [parentId], references: [id])
-  children                    Service[] @relation("children")
-  createdAt                   DateTime  @default(now())
-  updatedAt                   DateTime? @updatedAt
-  deletedAt                   DateTime?
+  id                    String    @id @default(uuid())
+  nameEn                String
+  nameAr                String
+  shortDescriptionEn    String
+  shortDescriptionAr    String
+  descriptionEn         String
+  descriptionAr         String
+  image                 String?
+  whiteImage            String?
+  isActive              Boolean   @default(true)
+  parentId              String?
+  stripeProductId       String?
+  stripePriceId         String?
+  stripePriceResponse   Json?
+  stripeProductResponse Json?
+  request               Request[]
+  parent                Service?  @relation("children", fields: [parentId], references: [id])
+  children              Service[] @relation("children")
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime? @updatedAt
+  deletedAt             DateTime?
 }
 
 model Appointment {
-  id                           String          @id @default(uuid())
-  firstName                    String
-  lastName                     String
-  phone                        String
-  email                        String
-  notes                        String
-  userId                       String?
-  appointmentappointmentTypeId String
-  user                         User?           @relation(fields: [userId], references: [id])
-  appointmentType              AppointmentType @relation(fields: [appointmentappointmentTypeId], references: [id])
-  createdAt                    DateTime        @default(now())
-  deletedAt                    DateTime?
+  id        String          @id @default(uuid())
+  firstName String
+  lastName  String
+  phone     String
+  email     String
+  notes     String
+  userId    String?
+  typeId    String
+  user      User?           @relation(fields: [userId], references: [id])
+  type      AppointmentType @relation(fields: [typeId], references: [id])
+  createdAt DateTime        @default(now())
+  updatedAt DateTime?       @updatedAt
+  deletedAt DateTime?
 }
 
 model AppointmentType {
@@ -311,10 +327,9 @@ model Doctor {
 }
 
 model EmailSubscription {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 model Language {
@@ -326,9 +341,4 @@ model Language {
 enum Gender {
   Male
   Femelle
-}
-
-enum Role {
-  Patient
-  Admin
 }

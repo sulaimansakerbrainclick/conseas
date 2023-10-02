@@ -1,11 +1,12 @@
 import prisma from "@/lib/prisma";
 import getEnhancedRes from "@/utils/getEnhancedRes";
-import { Role } from "@prisma/client";
+
 import { NextApiRequest, NextApiResponse } from "next";
 import dayjs from "dayjs";
 import { decodeToken } from "@/lib/jwt";
 import requestIp from "request-ip";
 import generateOtp from "@/utils/generateOtp";
+import RoleId from "@/enums/RoleId";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { method, headers } = req;
@@ -18,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     let user = await prisma.user.findFirst({
       where: {
         id: decoded!.id,
-        role: Role.Patient,
+        roleId: RoleId.User,
         deletedAt: null,
       },
     });

@@ -1,3 +1,4 @@
+import { ServiceFormValues } from "@/components/forms/service-form/ServiceForm";
 import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import deleteFile from "@/utils/deleteFile";
@@ -6,10 +7,6 @@ import validate from "@/utils/validate";
 import serviceSchema from "@/validation/serviceSchema";
 import { Service } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-
-export interface EditService extends Service {
-  imageBase64?: string;
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { method, query } = req;
@@ -30,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (method === "PUT") {
-    const body: EditService = req.body;
+    const body: ServiceFormValues = req.body;
 
     const error = await validate(serviceSchema, body);
 
@@ -49,25 +46,52 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return getEnhancedRes(res, 400, "Invalid service");
     }
 
-    if (body.price !== service.price && service.stripeProductId && service.stripePriceId) {
-      let product = await stripe.products.retrieve(service.stripeProductId);
+    let product;
+    let price;
+
+    if (service.stripeProductId) {
+      product = await stripe.products.retrieve(service.stripeProductId);
 
       const oldPrice = product.default_price;
 
-      let newPrice = await stripe.prices.create({
-        product: service.stripeProductId,
-        currency: "USD",
-        unit_amount: body.price * 100,
-      });
-
-      product = await stripe.products.update(service.stripeProductId, {
-        name: body.nameEn,
-        description: body.descriptionEn,
-        default_price: newPrice.id,
-      });
-
       await stripe.prices.update(oldPrice as string, {
         active: false,
+      });
+
+      product = await stripe.products.create({
+        name: body.nameEn,
+        default_price_data: {
+          currency: "USD",
+          unit_amount: body.priceUSD * 100,
+          currency_options: {
+            aed: {
+              unit_amount: body.priceAED * 100,
+            },
+          },
+        },
+      });
+
+      price = await stripe.prices.retrieve(product.default_price as string, {
+        expand: ["currency_options"],
+      });
+    }
+
+    if (!service.stripeProductId) {
+      product = await stripe.products.create({
+        name: body.nameEn,
+        default_price_data: {
+          currency: "USD",
+          unit_amount: body.priceUSD * 100,
+          currency_options: {
+            aed: {
+              unit_amount: body.priceAED * 100,
+            },
+          },
+        },
+      });
+
+      price = await stripe.prices.retrieve(product.default_price as string, {
+        expand: ["currency_options"],
       });
     }
 
@@ -89,7 +113,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       data: {
         nameEn: body.nameEn,
         nameAr: body.nameEn,
-        price: body.price,
         parentId: body.parentId,
         shortDescriptionEn: body.shortDescriptionEn,
         shortDescriptionAr: body.shortDescriptionAr,
@@ -97,6 +120,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         descriptionAr: body.descriptionAr,
         image: body.image,
         whiteImage: body.whiteImage,
+        stripeProductId: product!.id,
+        stripePriceId: price!.id,
+        stripePriceResponse: JSON.stringify(price),
+        stripeProductResponse: JSON.stringify(product),
       },
     });
 

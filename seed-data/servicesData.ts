@@ -3,7 +3,6 @@ const { v4: uuidv4 } = require("uuid");
 const servicesData = [
   {
     id: uuidv4(),
-    price: 500,
     nameEn: "Imaging Consultation",
     nameAr: "استشارة تصويرية",
     shortDescriptionEn: "Short Description En goes here",
@@ -15,7 +14,6 @@ const servicesData = [
     children: [
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "MRI",
         nameAr: "التصوير بالرنين المغناطيسي",
         shortDescriptionEn: "",
@@ -27,7 +25,7 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
+
         nameEn: "CT",
         nameAr: "CT",
         shortDescriptionEn: "",
@@ -39,7 +37,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "PET-CT",
         nameAr: "PET-CT",
         shortDescriptionEn: "",
@@ -51,7 +48,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "X-Ray",
         nameAr: "الأشعة السينية",
         shortDescriptionEn: "",
@@ -63,7 +59,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Ultrasound",
         nameAr: "الموجات فوق الصوتية",
         shortDescriptionEn: "",
@@ -75,7 +70,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Mammogram",
         nameAr: "تصوير الثدي بالأشعة السينية",
         shortDescriptionEn: "",
@@ -89,7 +83,6 @@ const servicesData = [
   },
   {
     id: uuidv4(),
-    price: 700,
     nameEn: "Case Consultation",
     nameAr: "استشارة حالة",
     shortDescriptionEn: "Short Description En goes here",
@@ -101,7 +94,6 @@ const servicesData = [
     children: [
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Cardiology",
         nameAr: "طب القلب",
         shortDescriptionEn: "",
@@ -113,7 +105,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Endocrinology",
         nameAr: "طب الغدد الصماء",
         shortDescriptionEn: "",
@@ -125,7 +116,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Neurology",
         nameAr: "علم الأعصاب",
         shortDescriptionEn: "",
@@ -137,7 +127,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Oncology",
         nameAr: "علم الأورام",
         shortDescriptionEn: "",
@@ -149,7 +138,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Ophthalmology",
         nameAr: "طب العيون",
         shortDescriptionEn: "",
@@ -161,7 +149,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Orthopedics",
         nameAr: "طب العظام",
         shortDescriptionEn: "",
@@ -173,7 +160,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "ENT",
         nameAr: "الأنف والأذن والحنجرة",
         shortDescriptionEn: "",
@@ -185,7 +171,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "General-Surgery",
         nameAr: "الجراحة العامة",
         shortDescriptionEn: "",
@@ -197,7 +182,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Pathology & Laboratory",
         nameAr: "علم الأمراض والمختبر",
         shortDescriptionEn: "",
@@ -209,7 +193,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Pediatric",
         nameAr: "اخصائي اطفال",
         shortDescriptionEn: "",
@@ -221,7 +204,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Pulmonology",
         nameAr: "أمراض الرئة",
         shortDescriptionEn: "",
@@ -233,7 +215,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Urology",
         nameAr: "جراحة المسالك البولية",
         shortDescriptionEn: "",
@@ -245,7 +226,6 @@ const servicesData = [
       },
       {
         id: uuidv4(),
-        price: 0,
         nameEn: "Weight-Reduction",
         nameAr: "تخفيض الوزن",
         shortDescriptionEn: "",

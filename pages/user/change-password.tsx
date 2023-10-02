@@ -34,7 +34,7 @@ export default function ChangePassword({
     { setSubmitting }: FormikHelpers<ChangePasswordFormVavlues>
   ) => {
     setSubmitting(true);
-    userService
+    userService.user
       .changePassword(values, token)
       .then((res) => {
         showSuccessToast(res.data.message);

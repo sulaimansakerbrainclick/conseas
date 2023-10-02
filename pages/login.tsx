@@ -9,9 +9,10 @@ import DonthaveAccount from "@/components/ui/dont-have-account/DontHaveAccount";
 import { useRouter } from "next/router";
 import serviceService from "@/services/serviceService";
 import { Role, Service } from "@prisma/client";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import useLogin from "@/components/hooks/useLogin";
+import RoleId from "@/enums/RoleId";
 
 export default function Login({
   mainServices,
@@ -23,7 +24,7 @@ export default function Login({
   const { t } = useTranslation("common");
 
   const { handleSubmit } = useLogin((user) => {
-    if (user.role === Role.Admin) {
+    if (user.roleId === RoleId.Admin) {
       router.push(links[Links.AdminProfile].href);
     } else {
       router.push(links[Links.Home].href);

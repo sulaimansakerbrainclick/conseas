@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const requests = await prisma.request.findMany({
       where: {
         deletedAt: null,
-        requestStatus: {
+        status: {
           id: {
             not: RequestStatusId.Draft,
           },

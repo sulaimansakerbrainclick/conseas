@@ -38,6 +38,7 @@ enum Links {
   AdminTestimonial = "admin-testimonial",
   AdminTelemedicinePolicy = "admin-telemedicine-policy",
   AdminCharts = "admin-charts",
+  ManageAdmins = "manage-admins",
 }
 
 export default Links;

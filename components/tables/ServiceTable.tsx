@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import { Service } from "@prisma/client";
 import { Switch } from "@mui/material";
 import { useTranslation } from "next-i18next";
+import Stripe from "stripe";
 
 const ServiceTable = ({
   services,
@@ -38,32 +39,34 @@ const ServiceTable = ({
       </TableHead>
 
       <TableBody>
-        {services.map(({ id, nameEn, parent, price, isActive, createdAt }) => (
-          <TableRow key={id}>
-            <TableCell>{nameEn}</TableCell>
-            <TableCell>{parent ? parent.nameEn : "-"}</TableCell>
-            <TableCell>{price}</TableCell>
-            <TableCell>
-              <Switch
-                checked={isActive}
-                onChange={() => toggleServiceActivation(id)}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            </TableCell>
-            <TableCell>
-              {
+        {services.map(({ id, nameEn, parent, stripePriceResponse, isActive, createdAt }) => {
+          const price = JSON.parse(stripePriceResponse as string) as Stripe.Response<Stripe.Price>;
+
+          return (
+            <TableRow key={id}>
+              <TableCell>{nameEn}</TableCell>
+              <TableCell>{parent ? parent.nameEn : "-"}</TableCell>
+              <TableCell>$ {((price?.unit_amount || 0) as number) / 100}</TableCell>
+              <TableCell>
+                <Switch
+                  checked={isActive}
+                  onChange={() => toggleServiceActivation(id)}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              </TableCell>
+              <TableCell>
                 <Button variant="outlined" color="primary" onClick={() => editService(id)}>
                   <EditIcon />
                 </Button>
-              }
-            </TableCell>
-            <TableCell>
-              <Button variant="outlined" color="error" onClick={() => deleteService(id)}>
-                <DeleteIcon />
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
+              </TableCell>
+              <TableCell>
+                <Button variant="outlined" color="error" onClick={() => deleteService(id)}>
+                  <DeleteIcon />
+                </Button>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

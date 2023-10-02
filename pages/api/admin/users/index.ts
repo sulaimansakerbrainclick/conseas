@@ -1,6 +1,7 @@
+import RoleId from "@/enums/RoleId";
 import prisma from "@/lib/prisma";
 import getEnhancedRes from "@/utils/getEnhancedRes";
-import { Role } from "@prisma/client";
+
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
@@ -9,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (method === "GET") {
     const users = await prisma.user.findMany({
       where: {
-        role: Role.Patient,
+        roleId: RoleId.User,
         deletedAt: null,
       },
       orderBy: {

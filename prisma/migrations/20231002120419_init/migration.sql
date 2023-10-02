@@ -14,7 +14,7 @@ CREATE TABLE `User` (
     `isEmailVerified` BOOLEAN NOT NULL DEFAULT false,
     `isPhoneVerified` BOOLEAN NOT NULL DEFAULT false,
     `isActive` BOOLEAN NOT NULL DEFAULT true,
-    `role` ENUM('Patient', 'Admin') NOT NULL,
+    `roleId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -25,19 +25,36 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Role` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Chart` (
     `id` VARCHAR(191) NOT NULL,
     `nameEn` VARCHAR(500) NOT NULL,
     `nameAr` VARCHAR(500) NOT NULL,
     `descriptionEn` VARCHAR(500) NOT NULL,
     `descriptionAr` VARCHAR(500) NOT NULL,
-    `price` INTEGER NOT NULL,
-    `interval` VARCHAR(191) NOT NULL,
-    `intervalCount` INTEGER NOT NULL,
     `stripeProductId` VARCHAR(191) NULL,
-    `stripePriceId` VARCHAR(191) NULL,
-    `stripePriceCreateResponse` JSON NULL,
-    `stripeProductCreateResponse` JSON NULL,
+    `stripeProductResponse` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NULL,
+    `deletedAt` DATETIME(3) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ChartPrice` (
+    `id` VARCHAR(191) NOT NULL,
+    `stripePriceId` VARCHAR(191) NOT NULL,
+    `stripePriceResponse` JSON NOT NULL,
+    `chartId` VARCHAR(191) NOT NULL,
+    `isDefault` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -51,7 +68,7 @@ CREATE TABLE `UserChart` (
     `chartId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `stripeSubscriptionId` VARCHAR(191) NOT NULL,
-    `stripeSubscriptionCreateResponse` JSON NOT NULL,
+    `stripeSubscriptionResponse` JSON NOT NULL,
     `status` VARCHAR(191) NOT NULL,
     `currentPeriodStart` DATETIME(3) NOT NULL,
     `currentPeriodEnd` DATETIME(3) NOT NULL,
@@ -93,6 +110,7 @@ CREATE TABLE `ContactUs` (
     `subject` VARCHAR(191) NOT NULL,
     `message` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
@@ -127,17 +145,17 @@ CREATE TABLE `Request` (
     `id` VARCHAR(191) NOT NULL,
     `firstName` VARCHAR(191) NOT NULL,
     `lastName` VARCHAR(191) NOT NULL,
-    `dateOfBirth` DATETIME(3) NULL,
-    `gender` ENUM('Male', 'Femelle') NULL,
+    `dateOfBirth` DATETIME(3) NOT NULL,
+    `gender` ENUM('Male', 'Femelle') NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `requestStatusId` VARCHAR(191) NOT NULL,
+    `statusId` VARCHAR(191) NOT NULL,
     `medicalInformation` VARCHAR(191) NOT NULL,
     `serviceId` VARCHAR(191) NOT NULL,
     `patientId` VARCHAR(191) NOT NULL,
     `myMedicalReport` VARCHAR(191) NULL,
     `medicalReport` VARCHAR(191) NULL,
-    `stripepaymentIntentId` VARCHAR(191) NULL,
+    `stripePaymentIntentId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -183,7 +201,6 @@ CREATE TABLE `Answer` (
 -- CreateTable
 CREATE TABLE `Service` (
     `id` VARCHAR(191) NOT NULL,
-    `price` INTEGER NOT NULL DEFAULT 0,
     `nameEn` VARCHAR(191) NOT NULL,
     `nameAr` VARCHAR(191) NOT NULL,
     `shortDescriptionEn` VARCHAR(191) NOT NULL,
@@ -196,8 +213,8 @@ CREATE TABLE `Service` (
     `parentId` VARCHAR(191) NULL,
     `stripeProductId` VARCHAR(191) NULL,
     `stripePriceId` VARCHAR(191) NULL,
-    `stripePriceCreateResponse` JSON NULL,
-    `stripeProductCreateResponse` JSON NULL,
+    `stripePriceResponse` JSON NULL,
+    `stripeProductResponse` JSON NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
@@ -214,8 +231,9 @@ CREATE TABLE `Appointment` (
     `email` VARCHAR(191) NOT NULL,
     `notes` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NULL,
-    `appointmentappointmentTypeId` VARCHAR(191) NOT NULL,
+    `typeId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NULL,
     `deletedAt` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
@@ -340,7 +358,6 @@ CREATE TABLE `EmailSubscription` (
     `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `deletedAt` DATETIME(3) NULL,
 
     UNIQUE INDEX `EmailSubscription_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -357,6 +374,12 @@ CREATE TABLE `Language` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ChartPrice` ADD CONSTRAINT `ChartPrice_chartId_fkey` FOREIGN KEY (`chartId`) REFERENCES `Chart`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `UserChart` ADD CONSTRAINT `UserChart_chartId_fkey` FOREIGN KEY (`chartId`) REFERENCES `Chart`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -369,7 +392,7 @@ ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_userId_fkey` FOREIGN KEY (`userId`
 ALTER TABLE `ForgetPasswordToken` ADD CONSTRAINT `ForgetPasswordToken_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Request` ADD CONSTRAINT `Request_requestStatusId_fkey` FOREIGN KEY (`requestStatusId`) REFERENCES `RequestStatus`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Request` ADD CONSTRAINT `Request_statusId_fkey` FOREIGN KEY (`statusId`) REFERENCES `RequestStatus`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Request` ADD CONSTRAINT `Request_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -396,7 +419,7 @@ ALTER TABLE `Service` ADD CONSTRAINT `Service_parentId_fkey` FOREIGN KEY (`paren
 ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_appointmentappointmentTypeId_fkey` FOREIGN KEY (`appointmentappointmentTypeId`) REFERENCES `AppointmentType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_typeId_fkey` FOREIGN KEY (`typeId`) REFERENCES `AppointmentType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

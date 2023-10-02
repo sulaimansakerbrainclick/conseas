@@ -7,7 +7,14 @@ const serviceSchema = yup.object().shape({
   descriptionAr: yup.string().required("Description is required"),
   shortDescriptionEn: yup.string().required("Short Description is required"),
   shortDescriptionAr: yup.string().required("Short Description is required"),
-  price: yup.number().required("Description is required"),
+  priceUSD: yup
+    .number()
+    .required("Price (USD) is required")
+    .min(1, "Price (USD) should be more than 0"),
+  priceAED: yup
+    .number()
+    .required("Price (AED) is required")
+    .min(1, "Price (AED) should be more than 0"),
 });
 
 export default serviceSchema;

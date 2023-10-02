@@ -3,7 +3,7 @@ import Header from "@/components/ui/header/Header";
 import AppTemplate from "@/components/templates/app/AppTemplate";
 import { sessionOptions } from "@/lib/session";
 import serviceService from "@/services/serviceService";
-import { Chart, Service } from "@prisma/client";
+import { Chart, ChartPrice, Service } from "@prisma/client";
 import { withIronSessionSsr } from "iron-session/next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
@@ -17,15 +17,21 @@ import chartService from "@/services/chartService";
 import ChartCardList from "@/components/ui/chart-card-list/ChartCardList";
 import { useContext, useState } from "react";
 import SessionContext from "@/components/contexts/SessionContext";
+import getCountryCode from "@/utils/getCountryCode";
+import Router from "next/router";
+import Links from "@/enums/Links";
+import links from "@/links/links";
 
 export default function MyChartManagement({
   mainServices,
   appSettings,
-  userCharts,
+  charts,
+  countryCode,
 }: {
   mainServices: Service[];
   appSettings: AppSettingFormValues;
-  userCharts: Chart[];
+  charts: (Chart & { prices: ChartPrice[] })[];
+  countryCode: string | null;
 }) {
   const { t } = useTranslation("common");
 
@@ -36,6 +42,11 @@ export default function MyChartManagement({
   const isRtl = useIsRtl();
 
   const handleSubscribeClick = (id: string) => {
+    if (!token) {
+      Router.push(links[Links.Login].href);
+      return;
+    }
+
     setChartToCheckout(id);
 
     chartService.user
@@ -93,9 +104,10 @@ export default function MyChartManagement({
         </div>
 
         <ChartCardList
-          data={userCharts}
+          data={charts}
           onSubscribeClick={handleSubscribeClick}
           chartToCheckout={chartToCheckout}
+          countryCode={countryCode}
         />
       </div>
     </AppTemplate>
@@ -103,17 +115,21 @@ export default function MyChartManagement({
 }
 
 export const getServerSideProps = withIronSessionSsr(async function ({ locale, req, params }: any) {
+  let ip = req.headers["x-forwarded-for"];
+
   const result = await Promise.all([
     serviceService.common.getMainServices(),
     settingService.geSettings(),
     chartService.user.getAllCharts(),
+    getCountryCode(ip),
   ]);
 
   return {
     props: {
       mainServices: result[0].data.data,
       appSettings: result[1].data.data,
-      userCharts: result[2].data.data,
+      charts: result[2].data.data,
+      countryCode: result[3],
       session: req.session,
       ...(await serverSideTranslations(locale, ["common"])),
     },

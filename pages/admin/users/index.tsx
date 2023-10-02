@@ -24,7 +24,7 @@ export default function Users({ users }: { users: User[] }) {
 export const getServerSideProps = withIronSessionSsr(async function ({ locale, req }: any) {
   const { token } = req.session;
 
-  const res = await userService.getAll(token);
+  const res = await userService.admin.getAllUsers(token);
   const users = res.data.data;
 
   return {

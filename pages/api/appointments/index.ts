@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         lastName: body.lastName,
         phone: body.phone,
         email: body.email,
-        appointmentType: {
+        type: {
           connect: { id: body.appointmentTypeId as string },
         },
         notes: body.notes,

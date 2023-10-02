@@ -14,7 +14,7 @@ import userService from "@/services/userService";
 import showSuccessToast from "@/utils/showSuccessToast";
 import { FormikHelpers } from "formik";
 import Router from "next/router";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 
 export default function ResetPassword({
@@ -32,7 +32,7 @@ export default function ResetPassword({
   ) => {
     setSubmitting(true);
 
-    userService
+    userService.common
       .resetPassword(values, resetToken)
       .then((res) => {
         showSuccessToast(res.data.message);

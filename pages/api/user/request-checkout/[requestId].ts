@@ -3,11 +3,12 @@ import stripe from "@/lib/stripe";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { decodeToken } from "@/lib/jwt";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import createOrRetrieveCustomerForUser from "@/utils/createOrRetrieveCustomerForUser";
 import { Service } from "@prisma/client";
 import CheckoutSessionType from "@/enums/CheckoutSessionType";
+import RequestStatusId from "@/enums/RequestStatusId";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { method, query, headers } = req;
@@ -55,28 +56,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       service = request.service.parent;
     }
 
-    if (!request.service.stripeProductId) {
-      const product = await stripe.products.create({
-        name: service.nameEn,
-        default_price_data: {
-          currency: "USD",
-          unit_amount: service.price * 100,
-        },
-      });
-
-      const price = await stripe.prices.retrieve(product.default_price as string);
-
-      service = await prisma.service.update({
+    if (!service.stripeProductId || !service.stripeProductResponse) {
+      await prisma.request.delete({
         where: {
-          id: service.id,
-        },
-        data: {
-          stripeProductId: product.id,
-          stripePriceId: price.id,
-          stripePriceCreateResponse: JSON.stringify(price),
-          stripeProductCreateResponse: JSON.stringify(product),
+          id: query.requestId as string,
+          status: {
+            id: RequestStatusId.Draft,
+          },
         },
       });
+
+      return getEnhancedRes(res, 400, "No price associated with this service");
     }
 
     const session = await stripe.checkout.sessions.create({

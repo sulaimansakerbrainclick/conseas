@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import { NextApiRequest, NextApiResponse } from "next";
+import Stripe from "stripe";
 
 export interface UpdateChart {
   nameEn: string;
@@ -112,7 +113,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
     }
 
-    const deleteChart = await prisma.chart.update({
+    const deletedChart = await prisma.chart.update({
       where: {
         id: query.id as string,
       },
@@ -121,6 +122,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
     });
 
-    return getEnhancedRes(res, 200, "Chart deleted successfully", deleteChart);
+    return getEnhancedRes(res, 200, "Chart deleted successfully", deletedChart);
   }
 }

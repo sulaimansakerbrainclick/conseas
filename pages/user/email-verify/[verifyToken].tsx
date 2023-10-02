@@ -28,7 +28,7 @@ export default function PhoneVerify({
 
   useEffect(() => {
     setTimeout(() => {
-      userService.verifyEmail(token, verifyToken).then((res) => {
+      userService.user.verifyEmail(token, verifyToken).then((res) => {
         showSuccessToast(res.data.message);
         router.push("/");
       });

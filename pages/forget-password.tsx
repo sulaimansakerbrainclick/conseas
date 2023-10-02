@@ -33,7 +33,7 @@ export default function ForgetPassword({
   ) => {
     setSubmitting(true);
 
-    userService
+    userService.common
       .sendResetEmail(email)
       .then((res) => {
         showSuccessToast(res.data.message);

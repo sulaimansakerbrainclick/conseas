@@ -5,12 +5,12 @@ import defaultProfileImage from "@/public/assets/images/default-profile-image.sv
 import SessionContext from "@/components/contexts/SessionContext";
 import classNames from "classnames";
 import { useRouter } from "next/router";
-import userLinks from "@/data/userLinks";
-import { Role } from "@prisma/client";
-import adminLinks from "@/data/adminLinks";
+import userLinks from "@/links/userLinks";
+import getAdminLinks from "@/links/getAdminLinks";
 import { useTranslation } from "next-i18next";
 import onLogoutClick from "@/utils/onLogoutClick";
 import { Button } from "@mui/material";
+import RoleId from "@/enums/RoleId";
 
 function DshboardTemplate({
   header,
@@ -27,7 +27,7 @@ function DshboardTemplate({
 
   const router = useRouter();
 
-  const links = user.role === Role.Admin ? adminLinks : userLinks;
+  const links = user.roleId === RoleId.Admin ? getAdminLinks(user.email) : userLinks;
 
   return (
     <>

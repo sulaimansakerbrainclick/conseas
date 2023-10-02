@@ -111,7 +111,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
               status: subscription.status,
               currentPeriodStart: new Date(subscription.current_period_start * 1000),
               currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              stripeSubscriptionCreateResponse: JSON.stringify(subscription),
+              stripeSubscriptionResponse: JSON.stringify(subscription),
             },
           });
 
@@ -148,8 +148,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
               id: requestId,
             },
             data: {
-              stripepaymentIntentId: paymentIntent.id,
-              requestStatus: {
+              stripePaymentIntentId: paymentIntent.id,
+              status: {
                 connect: { id: RequestStatusId.Pending },
               },
             },

@@ -2,7 +2,7 @@ import ProfileForm, { ProfileFormValues } from "@/components/forms/profile-form/
 import Header from "@/components/ui/header/Header";
 import SessionContext from "@/components/contexts/SessionContext";
 import DshboardTemplate from "@/components/templates/dshboard-template/DshboardTemplate";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import { sessionOptions } from "@/lib/session";
 import sessionService from "@/services/sessionService";
@@ -20,6 +20,7 @@ import serviceService from "@/services/serviceService";
 import settingService from "@/services/settingService";
 import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSettingsForm";
 import fileService from "@/services/fileService";
+import RoleId from "@/enums/RoleId";
 
 export default function Profile({
   user,
@@ -51,13 +52,13 @@ export default function Profile({
       dateOfBirth: dayjs(values.dateOfBirth).toISOString(),
     };
 
-    const editUserRes = await userService.editUser(newValues, token);
+    const editUserRes = await userService.user.editUser(newValues, token);
 
     const user = editUserRes.data.data;
 
     await sessionService.saveSession({ user, token });
 
-    if (user.role === Role.Admin) {
+    if (user.roleId === RoleId.Admin) {
       router.push(links[Links.AdminProfile].href);
     } else {
       router.push(links[Links.UserProfile].href);
@@ -91,7 +92,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
 
   const result = await Promise.all([
     serviceService.common.getMainServices(),
-    userService.me(token),
+    userService.user.me(token),
     settingService.geSettings(),
   ]);
 

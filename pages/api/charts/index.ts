@@ -1,7 +1,5 @@
 import prisma from "@/lib/prisma";
 import getEnhancedRes from "@/utils/getEnhancedRes";
-import validate from "@/utils/validate";
-import chartSchema from "@/validation/chartSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export interface CreateChart {
@@ -23,6 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        prices: true,
       },
     });
 

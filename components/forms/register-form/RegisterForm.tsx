@@ -13,7 +13,7 @@ import { useTranslation } from "next-i18next";
 import registerSchema from "@/validation/registerSchema";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Link from "next/link";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 
 export interface RegisterFormValues {

@@ -19,7 +19,8 @@ declare module "iron-session" {
       image: string;
       firstName: string;
       lastName: string;
-      role: string;
+      roleId: string;
+      email: string;
     };
   }
 }

@@ -16,11 +16,11 @@ import EmailSubscriptionForm, {
   EmailSubscriptionFormValues,
 } from "@/components/forms/email-subscription-form/EmailSubscriptionForm";
 import showSuccessToast from "@/utils/showSuccessToast";
-import footerLinks from "@/data/footerLinks";
+import footerLinks from "@/links/footerLinks";
 import Link from "next/link";
 import { Service } from "@prisma/client";
 import useIsRtl from "@/components/hooks/useIsRtl";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import { FormikHelpers } from "formik";
 import image from "@/public/assets/images/home3.png";

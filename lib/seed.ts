@@ -1,5 +1,4 @@
 const { v4: uuidv4 } = require("uuid");
-import { Role } from "@prisma/client";
 import prisma from "./prisma";
 import * as bcrypt from "bcryptjs";
 import settingsData from "../seed-data/settingsData";
@@ -11,8 +10,22 @@ import appointmentTypesData from "../seed-data/appointmentTypesData";
 import pagesData from "../seed-data/pagesData";
 import requestStatusData from "../seed-data/requestStatusData";
 import SectionId from "../enums/SectionId";
+import RoleId from "../enums/RoleId";
+import rolesData from "../seed-data/rolesData";
 
 async function main() {
+  await Promise.all(
+    rolesData.map(async (item) => {
+      return await prisma.role.upsert({
+        where: { id: item.id },
+        update: {},
+        create: {
+          ...item,
+        },
+      });
+    })
+  );
+
   await prisma.user.upsert({
     where: { id: uuidv4() },
     update: {},
@@ -20,7 +33,9 @@ async function main() {
       firstName: "admin",
       lastName: "admin",
       phone: "000000000000",
-      role: Role.Admin,
+      role: {
+        connect: { id: RoleId.Admin },
+      },
       email: "ceo@conseashealth.com",
       password: await bcrypt.hash("123456789", 10),
     },
@@ -125,17 +140,17 @@ async function main() {
     })
   );
 
-  await Promise.all(
-    chartsData.map(async ({ ...data }) => {
-      return await prisma.chart.upsert({
-        where: { id: uuidv4() },
-        update: {},
-        create: {
-          ...data,
-        },
-      });
-    })
-  );
+  // await Promise.all(
+  //   chartsData.map(async ({ ...data }) => {
+  //     return await prisma.chart.upsert({
+  //       where: { id: uuidv4() },
+  //       update: {},
+  //       create: {
+  //         ...data,
+  //       },
+  //     });
+  //   })
+  // );
 }
 
 main()

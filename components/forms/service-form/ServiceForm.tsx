@@ -15,7 +15,8 @@ export interface ServiceFormValues {
   whiteImage?: string | null;
   nameEn: string;
   nameAr: string;
-  price: number;
+  priceUSD: number;
+  priceAED: number;
   parentId: string;
   shortDescriptionEn: string;
   shortDescriptionAr: string;
@@ -149,14 +150,27 @@ const ServiceForm = ({
 
               <TextField
                 type="number"
-                name="price"
-                value={values.price}
-                onChange={(e) => setFieldValue("price", e.target.value)}
+                name="priceUSD"
+                label={`${t("Price (USD)")}*`}
+                value={values.priceUSD}
+                onChange={(e) => setFieldValue("priceUSD", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Price*")}
                 variant="outlined"
-                error={touched.price && !!errors.price}
-                helperText={touched.price && errors.price}
+                error={touched.priceUSD && !!errors.priceUSD}
+                helperText={touched.priceUSD && errors.priceUSD}
+                size="small"
+              />
+
+              <TextField
+                type="number"
+                name="priceAED"
+                label={`${t("Price (AED)")}*`}
+                value={values.priceAED}
+                onChange={(e) => setFieldValue("priceAED", e.target.value)}
+                onBlur={handleBlur}
+                variant="outlined"
+                error={touched.priceAED && !!errors.priceAED}
+                helperText={touched.priceAED && errors.priceAED}
                 size="small"
               />
             </div>

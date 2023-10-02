@@ -13,9 +13,10 @@ import showSuccessToast from "@/utils/showSuccessToast";
 import authService from "@/services/authService";
 import sessionService from "@/services/sessionService";
 import { useRouter } from "next/router";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import { FormikHelpers } from "formik";
+import RoleId from "@/enums/RoleId";
 
 export default function Register({
   mainServices,
@@ -32,7 +33,7 @@ export default function Register({
   ) => {
     setSubmitting(true);
 
-    userService
+    userService.common
       .register(values)
       .then((res) => {
         showSuccessToast(res.data.message);
@@ -43,7 +44,7 @@ export default function Register({
             sessionService
               .saveSession(res.data.data)
               .then(() => {
-                if (res.data.data.user.role === Role.Admin) {
+                if (res.data.data.user.roleId === RoleId.Admin) {
                   router.push(links[Links.AdminDashboards].href);
                 } else {
                   router.push(links[Links.Home].href);

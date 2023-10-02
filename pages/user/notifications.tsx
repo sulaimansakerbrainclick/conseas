@@ -63,7 +63,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
 
   const result = await Promise.all([
     serviceService.common.getMainServices(),
-    userService.getNotifications(token),
+    userService.user.getNotifications(token),
     settingService.geSettings(),
   ]);
 

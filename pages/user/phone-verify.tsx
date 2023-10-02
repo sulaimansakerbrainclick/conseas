@@ -30,7 +30,7 @@ export default function PhoneVerify({
   ) => {
     setSubmitting(true);
 
-    userService
+    userService.user
       .verifyPhone(otp, token)
       .then((res) => {
         showSuccessToast(res.data.message);

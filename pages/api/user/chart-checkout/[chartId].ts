@@ -3,11 +3,11 @@ import stripe from "@/lib/stripe";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { decodeToken } from "@/lib/jwt";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import createOrRetrieveCustomerForUser from "@/utils/createOrRetrieveCustomerForUser";
-import Interval from "@/enums/Interval";
 import CheckoutSessionType from "@/enums/CheckoutSessionType";
+import Stripe from "stripe";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { method, query, headers } = req;
@@ -55,33 +55,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return getEnhancedRes(res, 404, "Chart not found");
     }
 
-    if (!chart.stripeProductId) {
-      const product = await stripe.products.create({
-        name: chart.nameEn,
-        default_price_data: {
-          recurring: {
-            interval: chart.interval as Interval,
-            interval_count: chart.intervalCount,
-          },
-          currency: "USD",
-          unit_amount: chart.price * 100,
-        },
-      });
-
-      const price = await stripe.prices.retrieve(product.default_price as string);
-
-      chart = await prisma.chart.update({
-        where: {
-          id: chart.id,
-        },
-        data: {
-          stripeProductId: product.id,
-          stripePriceId: price.id,
-          stripePriceCreateResponse: JSON.stringify(price),
-          stripeProductCreateResponse: JSON.stringify(product),
-        },
-      });
+    if (!chart.stripeProductId || !chart.stripeProductResponse) {
+      return getEnhancedRes(res, 400, "No price associated with this chart");
     }
+
+    const product = JSON.parse(
+      chart.stripeProductResponse as string
+    ) as Stripe.Response<Stripe.Product>;
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
@@ -90,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
       line_items: [
         {
-          price: chart.stripePriceId as string,
+          price: product.default_price as string,
           quantity: 1,
         },
       ],

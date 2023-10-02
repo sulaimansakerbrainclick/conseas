@@ -3,7 +3,7 @@ import stripe from "@/lib/stripe";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import { NextApiRequest, NextApiResponse } from "next";
 import { decodeToken } from "@/lib/jwt";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {

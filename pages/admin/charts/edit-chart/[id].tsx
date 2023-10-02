@@ -43,14 +43,12 @@ export default function EditChart({ userChart }: { userChart: Chart }) {
     <DshboardTemplate header={<Header />}>
       <h1 className="mb-8">{t("Edit Chart")}</h1>
 
-      {userChart && (
-        <ChartForm
+      {/* <ChartForm
           onSubmit={handleSubmit}
           initialValues={{
             ...userChart,
           }}
-        />
-      )}
+        /> */}
     </DshboardTemplate>
   );
 }

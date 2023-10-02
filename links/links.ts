@@ -145,6 +145,10 @@ const links = {
     href: "/admin/charts",
     label: "charts",
   },
+  [Links.ManageAdmins]: {
+    href: "/admin/admins",
+    label: "Manage Admins",
+  },
 };
 
 export default links;

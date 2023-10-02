@@ -13,6 +13,7 @@ import _ from "lodash";
 import { FormikHelpers } from "formik";
 import Header from "@/components/ui/header/Header";
 import fileService from "@/services/fileService";
+import Stripe from "stripe";
 
 export default function EditService({
   service,
@@ -24,6 +25,8 @@ export default function EditService({
   const { token } = useContext(SessionContext)!;
 
   const router = useRouter();
+
+  const price = JSON.parse(service.stripePriceResponse as string) as Stripe.Response<Stripe.Price>;
 
   const handleSubmit = async (
     { imageFile, whiteImageFile, ...values }: ServiceFormValues,
@@ -56,16 +59,16 @@ export default function EditService({
     <DshboardTemplate header={<Header />}>
       <h1 className="mb-8">Edit Service</h1>
 
-      {service && (
-        <ServiceForm
-          mainServices={mainServices}
-          onSubmit={handleSubmit}
-          initialValues={{
-            ...service,
-            parentId: service.parentId || "",
-          }}
-        />
-      )}
+      <ServiceForm
+        mainServices={mainServices}
+        onSubmit={handleSubmit}
+        initialValues={{
+          ...service,
+          priceUSD: price?.unit_amount || 0,
+          priceAED: price?.currency_options?.aed?.unit_amount || 0,
+          parentId: service.parentId || "",
+        }}
+      />
     </DshboardTemplate>
   );
 }

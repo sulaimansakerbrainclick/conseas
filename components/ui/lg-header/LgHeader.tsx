@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logoIcon from "@/public/assets/icons/logo.svg";
 import { Button } from "@mui/material";
-import otherlinks from "@/data/otherlinks";
+import otherlinks from "@/links/otherlinks";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,14 +10,15 @@ import SessionContext from "@/components/contexts/SessionContext";
 import onLogoutClick from "@/utils/onLogoutClick";
 import { useRouter } from "next/router";
 import Menu from "@/components/reusable/menu/Menu";
-import userLinks from "@/data/userLinks";
+import userLinks from "@/links/userLinks";
 import { Role, Service } from "@prisma/client";
-import adminLinks from "@/data/adminLinks";
+import getAdminLinks from "@/links/getAdminLinks";
 import LanguageSwitcher from "@/components/reusable/language-switcher/LanguageSwitcher";
 import { useTranslation } from "next-i18next";
 import useIsRtl from "@/components/hooks/useIsRtl";
 import Links from "@/enums/Links";
-import links from "@/data/links";
+import links from "@/links/links";
+import RoleId from "@/enums/RoleId";
 
 const LgHeader = ({ className, services }: { className: string; services?: Service[] }) => {
   const { t } = useTranslation("common");
@@ -115,7 +116,7 @@ const LgHeader = ({ className, services }: { className: string; services?: Servi
               id="user-menu"
               label={user.firstName + " " + user.lastName}
               items={[
-                ...(user.role === Role.Admin ? adminLinks : userLinks).map(
+                ...(user.roleId === RoleId.Admin ? getAdminLinks(user.email) : userLinks).map(
                   ({ href, label }, index) => {
                     const isCurrent = href === pathname;
 

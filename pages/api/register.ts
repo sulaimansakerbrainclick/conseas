@@ -1,14 +1,13 @@
 import prisma from "@/lib/prisma";
-import generateOtp from "@/utils/generateOtp";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import validate from "@/utils/validate";
 import registerSchema from "@/validation/registerSchema";
-import {  Role } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import requestIp from "request-ip";
 import { v4 as uuidv4 } from "uuid";
 import sendEmail from "@/utils/sendEmail";
+import RoleId from "@/enums/RoleId";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { body, method } = req;
@@ -48,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         lastName: body.lastName,
         email: body.email,
         phone: body.phone,
-        role: Role.Patient,
+        roleId: RoleId.User,
         image: body.image,
         password: await bcrypt.hash(body.password, 10),
       },
@@ -80,45 +79,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
     });
 
-    if (body.email) {
-      const emailTokenFound = await prisma.emailToken.findFirst({
+    const emailTokenFound = await prisma.emailToken.findFirst({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (emailTokenFound) {
+      await prisma.emailToken.delete({
         where: {
           email: body.email,
         },
       });
+    }
 
-      if (emailTokenFound) {
-        await prisma.emailToken.delete({
-          where: {
-            email: body.email,
-          },
-        });
-      }
+    const token = uuidv4();
 
-      const token = uuidv4();
+    const emailToken = await prisma.emailToken.create({
+      data: {
+        ip: clientIp,
+        email: body.email,
+        token,
+      },
+    });
 
-      const emailToken = await prisma.emailToken.create({
-        data: {
-          ip: clientIp,
-          email: body.email,
-          token,
+    try {
+      await sendEmail({
+        from: `<${process.env.EMAIL_INFO_USERNAME}>`,
+        to: body.email,
+        subject: "Conseas account verify link",
+        text: "",
+        html: `Email verify link: ${process.env.NEXT_PUBLIC_APP_URL}/user/email-verify/${emailToken.token}`,
+        auth: {
+          user: process.env.EMAIL_INFO_USERNAME,
+          pass: "$_Y)bI]i!kRQ",
         },
       });
-
-      try {
-        await sendEmail({
-          from: `<${process.env.EMAIL_INFO_USERNAME}>`,
-          to: body.email,
-          subject: "Conseas account verify link",
-          text: "",
-          html: `Email verify link: ${process.env.NEXT_PUBLIC_APP_URL}/user/email-verify/${emailToken.token}`,
-          auth: {
-            user: process.env.EMAIL_INFO_USERNAME,
-            pass: "$_Y)bI]i!kRQ",
-          },
-        });
-      } catch {}
-    }
+    } catch {}
 
     const { password, ...userWithoutPass } = user;
 

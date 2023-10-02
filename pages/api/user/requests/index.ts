@@ -16,14 +16,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       where: {
         patientId: decoded!.id as string,
         deletedAt: null,
-        requestStatus: {
+        status: {
           id: {
             not: RequestStatusId.Draft,
           },
         },
       },
       include: {
-        requestStatus: true,
+        status: true,
       },
       orderBy: {
         createdAt: "desc",

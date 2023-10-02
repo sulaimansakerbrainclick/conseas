@@ -74,15 +74,7 @@ const RequestTable = ({
 
       <TableBody>
         {requests.map(
-          ({
-            id,
-            firstName,
-            lastName,
-            service,
-            requestStatusId,
-            medicalReport,
-            myMedicalReport,
-          }) => (
+          ({ id, firstName, lastName, service, statusId, medicalReport, myMedicalReport }) => (
             <TableRow key={id}>
               <TableCell>{firstName + " " + lastName}</TableCell>
 
@@ -91,8 +83,8 @@ const RequestTable = ({
               <TableCell>
                 <TextField
                   select
-                  name="requestStatusId"
-                  value={requestStatusId}
+                  name="statusId"
+                  value={statusId}
                   variant="outlined"
                   size="small"
                   onChange={(e) => toggleStatus(id, e.target.value as string)}

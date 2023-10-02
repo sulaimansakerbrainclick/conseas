@@ -1,9 +1,10 @@
+import RoleId from "@/enums/RoleId";
 import { decodeToken } from "@/lib/jwt";
 import prisma from "@/lib/prisma";
 import getEnhancedRes from "@/utils/getEnhancedRes";
 import validate from "@/utils/validate";
 import textSchema from "@/validation/textSchema";
-import { Role } from "@prisma/client";
+
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
@@ -16,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (method === "GET") {
     let questions;
 
-    if (decoded?.role === Role.Admin) {
+    if (decoded?.roleId === RoleId.Admin) {
       questions = await prisma.question.findMany({
         where: {
           requestId: query.requestId as string,
@@ -34,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       });
     }
 
-    if (decoded?.role === Role.Patient) {
+    if (decoded?.roleId === RoleId.User) {
       questions = await prisma.question.findMany({
         where: {
           requestId: query.requestId as string,

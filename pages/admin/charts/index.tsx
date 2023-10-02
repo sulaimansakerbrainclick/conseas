@@ -1,6 +1,6 @@
 import DshboardTemplate from "@/components/templates/dshboard-template/DshboardTemplate";
 import { sessionOptions } from "@/lib/session";
-import { Chart } from "@prisma/client";
+import { Chart, ChartPrice } from "@prisma/client";
 import { withIronSessionSsr } from "iron-session/next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import Header from "@/components/ui/header/Header";
 import ChartTable from "@/components/tables/ChartTable";
 import chartService from "@/services/chartService";
 
-export default function Charts({ charts }: { charts: (Chart & { parent: Chart })[] }) {
+export default function Charts({ charts }: { charts: (Chart & { prices: ChartPrice[] })[] }) {
   const router = useRouter();
   const { t } = useTranslation("common");
 

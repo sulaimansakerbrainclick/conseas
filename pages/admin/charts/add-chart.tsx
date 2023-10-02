@@ -15,7 +15,8 @@ import ChartForm, { ChartFormValues } from "@/components/forms/chart-form/ChartF
 const initialValues: ChartFormValues = {
   nameEn: "",
   nameAr: "",
-  price: 0,
+  priceUSD: 0,
+  priceAED: 0,
   interval: "",
   intervalCount: 0,
   descriptionEn: "",

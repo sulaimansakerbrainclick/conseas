@@ -20,7 +20,7 @@
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.13.2",
     "@mui/x-date-pickers": "^6.5.0",
-    "@prisma/client": "^5.1.1",
+    "@prisma/client": "^5.3.1",
     "@stripe/react-stripe-js": "^2.1.2",
     "@stripe/stripe-js": "^2.1.0",
     "@types/node": "20.2.5",
@@ -52,7 +52,6 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.4",
     "postcss": "8.4.24",
-    "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
@@ -88,6 +87,7 @@
     "@types/request-ip": "^0.0.38",
     "@types/stylis": "^4.2.0",
     "@types/uuid": "^9.0.1",
+    "prisma": "^5.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }

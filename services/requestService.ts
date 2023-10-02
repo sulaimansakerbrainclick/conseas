@@ -16,10 +16,10 @@ const uploadMedicalReport = (id: string, data: any, token: string) => {
   });
 };
 
-const changeRequestStatus = (id: string, requestStatusId: string, token: string) => {
+const changeRequestStatus = (id: string, statusId: string, token: string) => {
   return http.put(
     `/admin/requests/change-status/${id}`,
-    { requestStatusId },
+    { statusId },
     {
       headers: {
         Authorization: token,

@@ -12,7 +12,7 @@ import settingService from "@/services/settingService";
 import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSettingsForm";
 import icon from "@/public/assets/icons/something-went-wrong.svg";
 import Image from "next/image";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
 import { Button } from "@mui/material";
 import Link from "next/link";

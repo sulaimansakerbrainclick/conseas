@@ -22,7 +22,7 @@ const UserTable = ({ users }: { users: User[] }) => {
   const { token } = useContext(SessionContext)!;
 
   const toggleActivation = (id: string, isActive: boolean) => {
-    userService
+    userService.admin
       .blockUser(id, isActive, token)
       .then((res) => {
         showSuccessToast(res.data.message);

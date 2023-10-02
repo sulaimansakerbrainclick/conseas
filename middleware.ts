@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decodeToken } from "./lib/jwt";
 import getMiddlewareRes from "./utils/getMiddlewareRes";
-import { Role } from "@prisma/client";
+
 import { getIronSession } from "iron-session/edge";
 import { sessionOptions } from "./lib/session";
+import RoleId from "./enums/RoleId";
 
 const getIsAdminRoute = (pathname: string) => {
   return pathname.includes("admin");
@@ -41,7 +42,7 @@ export async function middleware(req: NextRequest) {
     }
 
     const isAdminRoute = getIsAdminRoute(pathname);
-    if (isAdminRoute && decoded.role !== Role.Admin) {
+    if (isAdminRoute && decoded.roleId !== RoleId.Admin) {
       return getMiddlewareRes(401, "Access denied");
     }
 
@@ -62,7 +63,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const isAdminRoute = getIsAdminRoute(pathname);
-  if (isAdminRoute && decoded.role !== Role.Admin) {
+  if (isAdminRoute && decoded.roleId !== RoleId.Admin) {
     return NextResponse.redirect(new URL("/unauthorized", req.url));
   }
 

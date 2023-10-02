@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useContext, useState } from "react";
 import { Toolbar } from "@mui/material";
-import otherlinks from "@/data/otherlinks";
+import otherlinks from "@/links/otherlinks";
 import Link from "next/link";
 import classNames from "classnames";
 import { usePathname } from "next/navigation";
@@ -18,14 +18,15 @@ import onLogoutClick from "@/utils/onLogoutClick";
 import SessionContext from "@/components/contexts/SessionContext";
 import { useRouter } from "next/router";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import { Role, Service } from "@prisma/client";
-import userLinks from "@/data/userLinks";
-import adminLinks from "@/data/adminLinks";
+import { Service } from "@prisma/client";
+import userLinks from "@/links/userLinks";
+import getAdminLinks from "@/links/getAdminLinks";
 import { useTranslation } from "next-i18next";
 import useIsRtl from "@/components/hooks/useIsRtl";
 import LanguageSwitcher from "@/components/reusable/language-switcher/LanguageSwitcher";
-import links from "@/data/links";
+import links from "@/links/links";
 import Links from "@/enums/Links";
+import RoleId from "@/enums/RoleId";
 
 export default function MaxLgHeader({
   className,
@@ -173,30 +174,32 @@ export default function MaxLgHeader({
             </div>
 
             {user &&
-              (user.role === Role.Admin ? adminLinks : userLinks).map(({ label, href }, index) => {
-                const isCurrent = href === pathname;
+              (user.roleId === RoleId.Admin ? getAdminLinks(user.email) : userLinks).map(
+                ({ label, href }, index) => {
+                  const isCurrent = href === pathname;
 
-                return (
-                  <ListItem key={index} disablePadding>
-                    <ListItemButton className="text-center">
-                      <ListItemText
-                        primary={
-                          <Link
-                            key={index}
-                            href={href}
-                            className={classNames("", {
-                              "font-bold decoration-2 text-color-1": isCurrent,
-                              "text-black": !isCurrent,
-                            })}
-                          >
-                            {t(label)}
-                          </Link>
-                        }
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
+                  return (
+                    <ListItem key={index} disablePadding>
+                      <ListItemButton className="text-center">
+                        <ListItemText
+                          primary={
+                            <Link
+                              key={index}
+                              href={href}
+                              className={classNames("", {
+                                "font-bold decoration-2 text-color-1": isCurrent,
+                                "text-black": !isCurrent,
+                              })}
+                            >
+                              {t(label)}
+                            </Link>
+                          }
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                }
+              )}
 
             <div className="flex justify-center mt-4">
               {!token && (

@@ -9,7 +9,8 @@ import Interval from "@/enums/Interval";
 export interface ChartFormValues {
   nameEn: string;
   nameAr: string;
-  price: number;
+  priceUSD: number;
+  priceAED: number;
   interval: string;
   intervalCount: number;
   descriptionEn: string;
@@ -42,12 +43,11 @@ const ChartForm = ({
                 value={values.nameEn}
                 onChange={(e) => setFieldValue("nameEn", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Name (En)")}
+                label={`${t("Name (En)")}*`}
                 variant="outlined"
                 error={touched.nameEn && !!errors.nameEn}
                 helperText={touched.nameEn && errors.nameEn}
                 size="small"
-                className="flex-1"
               />
 
               <TextField
@@ -55,30 +55,43 @@ const ChartForm = ({
                 value={values.nameAr}
                 onChange={(e) => setFieldValue("nameAr", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Name (Ar)")}
+                label={`${t("Name (Ar)")}*`}
                 variant="outlined"
                 error={touched.nameAr && !!errors.nameAr}
                 helperText={touched.nameAr && errors.nameAr}
                 size="small"
-                className="flex-1"
               />
             </div>
 
             <div className="flex gap-5">
               <TextField
                 type="number"
-                name="price"
-                value={values.price}
-                onChange={(e) => setFieldValue("price", e.target.value)}
+                name="priceUSD"
+                label={`${t("Price (USD)")}*`}
+                value={values.priceUSD}
+                onChange={(e) => setFieldValue("priceUSD", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Price*")}
                 variant="outlined"
-                error={touched.price && !!errors.price}
-                helperText={touched.price && errors.price}
+                error={touched.priceUSD && !!errors.priceUSD}
+                helperText={touched.priceUSD && errors.priceUSD}
                 size="small"
-                className="flex-1"
               />
 
+              <TextField
+                type="number"
+                name="priceAED"
+                label={`${t("Price (AED)")}*`}
+                value={values.priceAED}
+                onChange={(e) => setFieldValue("priceAED", e.target.value)}
+                onBlur={handleBlur}
+                variant="outlined"
+                error={touched.priceAED && !!errors.priceAED}
+                helperText={touched.priceAED && errors.priceAED}
+                size="small"
+              />
+            </div>
+
+            <div className="flex gap-5">
               <TextField
                 select
                 name="interval"
@@ -86,11 +99,10 @@ const ChartForm = ({
                 onChange={(e) => setFieldValue("interval", e.target.value)}
                 onBlur={handleBlur}
                 variant="outlined"
-                label={t("Appointment Interval")}
+                label={`${t("Appointment Interval")}*`}
                 error={touched.interval && !!errors.interval}
                 helperText={touched.interval && t(errors.interval || "")}
                 size="small"
-                className="flex-1"
               >
                 {Object.entries(Interval).map(([key, value]) => (
                   <MenuItem key={key} value={value}>
@@ -105,12 +117,11 @@ const ChartForm = ({
                 value={values.intervalCount}
                 onChange={(e) => setFieldValue("intervalCount", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Interval Count*")}
+                label={`${t("Interval Count")}*`}
                 variant="outlined"
                 error={touched.intervalCount && !!errors.intervalCount}
                 helperText={touched.intervalCount && errors.intervalCount}
                 size="small"
-                className="flex-1"
               />
             </div>
 
@@ -120,14 +131,13 @@ const ChartForm = ({
                 value={values.descriptionEn}
                 onChange={(e) => setFieldValue("descriptionEn", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Description (En)")}
+                label={`${t("Description (En)")}*`}
                 variant="outlined"
                 error={!!errors.descriptionEn && touched.descriptionEn}
                 helperText={touched.descriptionEn && errors.descriptionEn}
                 size="small"
                 multiline
                 maxRows={4}
-                className="flex-1"
               />
 
               <TextField
@@ -135,14 +145,13 @@ const ChartForm = ({
                 value={values.descriptionAr}
                 onChange={(e) => setFieldValue("descriptionAr", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Description (Ar)")}
+                label={`${t("Description (Ar)")}*`}
                 variant="outlined"
                 error={!!errors.descriptionAr && touched.descriptionAr}
                 helperText={touched.descriptionAr && errors.descriptionAr}
                 size="small"
                 multiline
                 maxRows={4}
-                className="flex-1"
               />
             </div>
 
