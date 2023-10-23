@@ -40,10 +40,10 @@ const WhyChoose = ({ data }: { data: Section & { list: SectionItem[] } }) => {
 
   return (
     <div className="flex flex-col lg:flex-row items-center lg:gap-16">
-      <div className="flex-1">
+      <div className="flex-1 max-lg:mb-8">
         <h2 className="text-4xl uppercase mb-8">{isRtl ? titleAr : titleEn}</h2>
 
-        <p className="max-lg:mb-4">{isRtl ? textAr : textEn}</p>
+        <p>{isRtl ? textAr : textEn}</p>
       </div>
 
       <div className="flex-1">

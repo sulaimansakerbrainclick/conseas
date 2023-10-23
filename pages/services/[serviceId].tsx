@@ -58,7 +58,7 @@ export default function Home({
 
             <h2 className="uppercase font-semibold text-3xl mb-8">{isRtl ? nameAr : nameEn}</h2>
 
-            <p>{isRtl ? descriptionAr : descriptionEn}</p>
+            <div dangerouslySetInnerHTML={{ __html: isRtl ? descriptionAr : descriptionEn }}></div>
           </div>
 
           <div className="flex flex-wrap">

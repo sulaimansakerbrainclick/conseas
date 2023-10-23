@@ -52,7 +52,10 @@ const ChartCardList = ({
 
                 <h3 className="uppercase text-center text-4xl mb-7.5">{isRtl ? nameAr : nameEn}</h3>
 
-                <p className="text-sm mb-9">{isRtl ? descriptionAr : descriptionEn}</p>
+                <div
+                  className="text-sm mb-9 w-full"
+                  dangerouslySetInnerHTML={{ __html: isRtl ? descriptionAr : descriptionEn }}
+                ></div>
               </div>
 
               <div className="text-center">

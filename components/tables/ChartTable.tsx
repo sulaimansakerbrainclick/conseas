@@ -22,7 +22,6 @@ const ChartTable = ({
       <TableHead>
         <TableRow>
           <TableCell>{t("Name")}</TableCell>
-          <TableCell>{t("Description")}</TableCell>
           <TableCell>{t("Price")}</TableCell>
           <TableCell>{t("Interval")}</TableCell>
           <TableCell>{t("Interval Count")}</TableCell>
@@ -41,7 +40,6 @@ const ChartTable = ({
           return (
             <TableRow key={id}>
               <TableCell>{nameEn}</TableCell>
-              <TableCell>{descriptionEn}</TableCell>
               <TableCell>${(price.unit_amount as number) / 100} </TableCell>
               <TableCell>{price.recurring?.interval} </TableCell>
               <TableCell>{price.recurring?.interval_count}</TableCell>

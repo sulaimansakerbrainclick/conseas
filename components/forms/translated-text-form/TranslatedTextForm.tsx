@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import Loader from "@/components/reusable/loader";
 import { FormControl, FormHelperText } from "@mui/material";
 
-const DraftEditor = dynamic(() => import("@/components/reusable/draft-editor/DraftEditor"), {
+const Editor = dynamic(() => import("@/components/reusable/editor/Editor"), {
   ssr: false,
   loading: () => <Loader />,
 });
@@ -42,10 +42,7 @@ const TranslatedTextForm = ({
             <FormControl required error={!!errors.textEn && touched.textEn}>
               <div className="mb-2">{t("Text")} (En)</div>
 
-              <DraftEditor
-                value={values.textEn}
-                onChange={(text) => setFieldValue("textEn", text)}
-              />
+              <Editor value={values.textEn} onChange={(text) => setFieldValue("textEn", text)} />
 
               {errors?.textEn && touched?.textEn && (
                 <FormHelperText>{t(errors?.textEn)}</FormHelperText>
@@ -55,10 +52,7 @@ const TranslatedTextForm = ({
             <FormControl required error={!!errors.textAr && touched.textAr}>
               <div className="mb-2">{t("Text")} (Ar)</div>
 
-              <DraftEditor
-                value={values.textAr}
-                onChange={(text) => setFieldValue("textAr", text)}
-              />
+              <Editor value={values.textAr} onChange={(text) => setFieldValue("textAr", text)} />
 
               {errors?.textAr && touched?.textAr && (
                 <FormHelperText>{t(errors?.textAr)}</FormHelperText>

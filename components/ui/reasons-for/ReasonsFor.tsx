@@ -12,9 +12,11 @@ const ReasonsFor = ({ data }: { data: Section & { list: SectionItem[] } }) => {
 
   return (
     <div>
-      <h2 className="text-4xl text-center mb-2">{isRtl ? titleAr : titleEn}</h2>
+      <div className="flex-3 flex flex-col justify-center mb-8">
+        <h2 className="text-4xl text-center mb-8">{isRtl ? titleAr : titleEn}</h2>
 
-      <p className="text-center mb-8">{isRtl ? textAr : textEn}</p>
+        <p className="text-center">{isRtl ? textAr : textEn}</p>
+      </div>
 
       <div className="flex flex-col lg:flex-row flex-wrap gap-8 lg:gap-18 text-center">
         {list.map(({ id, image, textAr, textEn, titleAr, titleEn }, index) => (

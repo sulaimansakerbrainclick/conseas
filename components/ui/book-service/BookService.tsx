@@ -36,7 +36,7 @@ const BookService = ({ appointmentTypes }: { appointmentTypes: AppointmentType[]
         <h2 className="text-4xl uppercase mb-8">{t("Book a Service")}</h2>
 
         <div>
-          <div className="mb-4.5 font-medium text-xl">{t("Enter Details")}</div>
+          <div className="mb-4 font-medium text-xl">{t("Enter Details")}</div>
 
           <SubmitConsultForm
             appointmentTypes={appointmentTypes}

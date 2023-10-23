@@ -206,7 +206,7 @@ const DoctorForm = ({
                 value={values.email}
                 onChange={(e) => setFieldValue("email", e.target.value)}
                 onBlur={handleBlur}
-                label={t("Email")}
+                label={`${t("Email")}*`}
                 variant="outlined"
                 error={!!errors.email && touched.email}
                 helperText={touched.email && errors.email}

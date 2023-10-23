@@ -28,12 +28,25 @@
 
 @media screen and (min-width: 1024px) {
   :root {
+    --container-padding: 20px;
     --header-height: 66px;
     --spacer: 1;
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1150px) {
+  :root {
+    --container-padding: 20px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  :root {
+    --container-padding: 16px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
   :root {
     --container-padding: 50px;
   }

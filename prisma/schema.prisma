@@ -54,8 +54,8 @@ model Chart {
   id                    String       @id @default(uuid())
   nameEn                String       @db.VarChar(500)
   nameAr                String       @db.VarChar(500)
-  descriptionEn         String       @db.VarChar(500)
-  descriptionAr         String       @db.VarChar(500)
+  descriptionEn         String       @db.MediumText
+  descriptionAr         String       @db.MediumText
   stripeProductId       String?
   stripeProductResponse Json?
   prices                ChartPrice[]
@@ -200,8 +200,8 @@ model Service {
   nameAr                String
   shortDescriptionEn    String
   shortDescriptionAr    String
-  descriptionEn         String
-  descriptionAr         String
+  descriptionEn         String    @db.MediumText
+  descriptionAr         String    @db.MediumText
   image                 String?
   whiteImage            String?
   isActive              Boolean   @default(true)
@@ -252,8 +252,8 @@ model Notification {
 
 model Page {
   id        String    @id
-  nameEn    String    @db.MediumText
-  nameAr    String    @db.MediumText
+  nameEn    String
+  nameAr    String
   textEn    String    @db.MediumText
   textAr    String    @db.MediumText
   createdAt DateTime  @default(now())

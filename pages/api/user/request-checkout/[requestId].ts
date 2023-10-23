@@ -52,10 +52,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     let service = request.service as Service;
 
-    if (request.service.parent) {
-      service = request.service.parent;
-    }
-
     if (!service.stripeProductId || !service.stripeProductResponse) {
       await prisma.request.delete({
         where: {

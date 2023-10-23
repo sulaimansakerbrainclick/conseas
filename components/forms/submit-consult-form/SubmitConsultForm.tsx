@@ -43,7 +43,7 @@ const SubmitConsultForm = ({
       {({ values, errors, touched, handleBlur, handleSubmit, setFieldValue, isSubmitting }) => {
         return (
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-5">
+            <div className="flex flex-col lg:flex-row gap-5">
               <TextField
                 name="firstName"
                 value={values.firstName}
@@ -75,7 +75,7 @@ const SubmitConsultForm = ({
               value={values.email}
               onChange={(e) => setFieldValue("email", e.target.value)}
               onBlur={handleBlur}
-              label={t("Email")}
+              label={`${t("Email")}*`}
               variant="outlined"
               error={!!errors.email && touched.email}
               helperText={touched.email && t(errors.email || "")}
@@ -101,7 +101,7 @@ const SubmitConsultForm = ({
               onChange={(e) => setFieldValue("appointmentTypeId", e.target.value)}
               onBlur={handleBlur}
               variant="outlined"
-              label={t("Appointment Type")}
+              label={`${t("Appointment Type")}*`}
               error={touched.appointmentTypeId && !!errors.appointmentTypeId}
               helperText={touched.appointmentTypeId && t(errors.appointmentTypeId || "")}
               size="small"

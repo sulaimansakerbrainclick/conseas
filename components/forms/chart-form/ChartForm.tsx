@@ -1,10 +1,17 @@
 import React from "react";
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, FormControl, FormHelperText } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
 import { useTranslation } from "next-i18next";
 import LoadingButton from "@mui/lab/LoadingButton";
 import chartSchema from "@/validation/chartSchema";
 import Interval from "@/enums/Interval";
+import Loader from "@/components/reusable/loader";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@/components/reusable/editor/Editor"), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 export interface ChartFormValues {
   nameEn: string;
@@ -126,36 +133,32 @@ const ChartForm = ({
             </div>
 
             <div className="flex gap-5">
-              <TextField
-                name="descriptionEn"
-                value={values.descriptionEn}
-                onChange={(e) => setFieldValue("descriptionEn", e.target.value)}
-                onBlur={handleBlur}
-                label={`${t("Description (En)")}*`}
-                variant="outlined"
-                error={!!errors.descriptionEn && touched.descriptionEn}
-                helperText={touched.descriptionEn && errors.descriptionEn}
-                size="small"
-                multiline
-                maxRows={4}
-              />
+              <FormControl required error={!!errors.descriptionEn && touched.descriptionEn}>
+                <div className="mb-2">{`${t("Description (En)")}*`}</div>
 
-              <TextField
-                name="descriptionAr"
-                value={values.descriptionAr}
-                onChange={(e) => setFieldValue("descriptionAr", e.target.value)}
-                onBlur={handleBlur}
-                label={`${t("Description (Ar)")}*`}
-                variant="outlined"
-                error={!!errors.descriptionAr && touched.descriptionAr}
-                helperText={touched.descriptionAr && errors.descriptionAr}
-                size="small"
-                multiline
-                maxRows={4}
-              />
+                <Editor
+                  value={values.descriptionEn}
+                  onChange={(text) => setFieldValue("descriptionEn", text)}
+                />
+
+                {errors?.descriptionEn && touched?.descriptionEn && (
+                  <FormHelperText>{t(errors?.descriptionEn)}</FormHelperText>
+                )}
+              </FormControl>
+
+              <FormControl required error={!!errors.descriptionAr && touched.descriptionAr}>
+                <div className="mb-2">{`${t("Description (Ar)")}*`}</div>
+
+                <Editor
+                  value={values.descriptionAr}
+                  onChange={(text) => setFieldValue("descriptionAr", text)}
+                />
+
+                {errors?.descriptionAr && touched?.descriptionAr && (
+                  <FormHelperText>{t(errors?.descriptionAr)}</FormHelperText>
+                )}
+              </FormControl>
             </div>
-
-            <div className="flex gap-5"></div>
 
             <div>
               <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>

@@ -5,9 +5,9 @@ import MaxLgHeader from "../max-lg-header/MaxLgHeader";
 const Header = ({ services }: { services?: Service[] }) => {
   return (
     <>
-      <LgHeader className="max-lg:hidden" services={services} />
+      <LgHeader className="max-1lg:hidden" services={services} />
 
-      <MaxLgHeader className="lg:hidden" services={services} />
+      <MaxLgHeader className="1lg:hidden" services={services} />
     </>
   );
 };

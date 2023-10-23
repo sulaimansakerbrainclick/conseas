@@ -101,7 +101,7 @@ const Footer = ({
 
   return (
     <div className="relative overflow-hidden">
-      <div className="container pt-10.5">
+      <div className="container">
         <div className="mb-20">
           <div className="py-5 flex bg-white rounded-2xl shadow-sm">
             <div className="w-full lg:flex justify-between">

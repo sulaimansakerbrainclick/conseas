@@ -54,7 +54,7 @@ const LgHeader = ({ className, services }: { className: string; services?: Servi
           <Image src={logoIcon} alt="" className="w-66.5 h-auto" />
         </Link>
 
-        <nav className="hidden lg:flex items-center">
+        <nav className="hidden lg:flex items-center lg:gap-4 2xl:gap-6">
           {services &&
             services.length !== 0 &&
             services.map(({ id, nameEn, nameAr }, index) => {
@@ -66,7 +66,7 @@ const LgHeader = ({ className, services }: { className: string; services?: Servi
                 <Link
                   key={index}
                   href={`/services/${id}`}
-                  className={classNames("ltr:mr-6 rtl:ml-6", {
+                  className={classNames("", {
                     "font-bold decoration-2 text-color-1": isCurrent,
                     "text-black": !isCurrent,
                   })}
@@ -78,7 +78,7 @@ const LgHeader = ({ className, services }: { className: string; services?: Servi
 
           <Link
             href={links[Links.MyChartManagement].href}
-            className={classNames("ltr:mr-6 rtl:ml-6", {
+            className={classNames("", {
               "font-bold decoration-2 text-color-1":
                 links[Links.MyChartManagement].href === pathname,
               "text-black": links[Links.MyChartManagement].href !== pathname,
@@ -114,7 +114,7 @@ const LgHeader = ({ className, services }: { className: string; services?: Servi
           {token && user && (
             <Menu
               id="user-menu"
-              label={user.firstName + " " + user.lastName}
+              label={user.firstName}
               items={[
                 ...(user.roleId === RoleId.Admin ? getAdminLinks(user.email) : userLinks).map(
                   ({ href, label }, index) => {

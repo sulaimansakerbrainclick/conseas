@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, FormControl, FormHelperText } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
 import { useTranslation } from "next-i18next";
 import { Service } from "@prisma/client";
@@ -7,6 +7,13 @@ import serviceSchema from "@/validation/serviceSchema";
 import UploadImage from "@/components/reusable/upload-image/UploadImage";
 import defaultProfileImage from "@/public/assets/images/default-profile-image.svg";
 import LoadingButton from "@mui/lab/LoadingButton";
+import dynamic from "next/dynamic";
+import Loader from "@/components/reusable/loader";
+
+const Editor = dynamic(() => import("@/components/reusable/editor/Editor"), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 export interface ServiceFormValues {
   imageFile?: File;
@@ -83,7 +90,7 @@ const ServiceForm = ({
                   onChange={(e) => setFieldValue("parentId", e.target.value)}
                   onBlur={handleBlur}
                   variant="outlined"
-                  label={t("Main Service")}
+                  label={t("Parent Service")}
                   error={touched.parentId && !!errors.parentId}
                   helperText={touched.parentId && errors.parentId}
                   size="small"
@@ -175,34 +182,32 @@ const ServiceForm = ({
               />
             </div>
 
-            <div className="flex gap-5 mb-8">
-              <TextField
-                name="descriptionEn"
-                value={values.descriptionEn}
-                onChange={(e) => setFieldValue("descriptionEn", e.target.value)}
-                onBlur={handleBlur}
-                label={t("Description (En)")}
-                variant="outlined"
-                error={!!errors.descriptionEn && touched.descriptionEn}
-                helperText={touched.descriptionEn && errors.descriptionEn}
-                size="small"
-                multiline
-                maxRows={4}
-              />
+            <div className="flex gap-5">
+              <FormControl required error={!!errors.descriptionEn && touched.descriptionEn}>
+                <div className="mb-2">{`${t("Description (En)")}*`}</div>
 
-              <TextField
-                name="descriptionAr"
-                value={values.descriptionAr}
-                onChange={(e) => setFieldValue("descriptionAr", e.target.value)}
-                onBlur={handleBlur}
-                label={t("Description (Ar)")}
-                variant="outlined"
-                error={!!errors.descriptionAr && touched.descriptionAr}
-                helperText={touched.descriptionAr && errors.descriptionAr}
-                size="small"
-                multiline
-                maxRows={4}
-              />
+                <Editor
+                  value={values.descriptionEn}
+                  onChange={(text) => setFieldValue("descriptionEn", text)}
+                />
+
+                {errors?.descriptionEn && touched?.descriptionEn && (
+                  <FormHelperText>{t(errors?.descriptionEn)}</FormHelperText>
+                )}
+              </FormControl>
+
+              <FormControl required error={!!errors.descriptionAr && touched.descriptionAr}>
+                <div className="mb-2">{`${t("Description (Ar)")}*`}</div>
+
+                <Editor
+                  value={values.descriptionAr}
+                  onChange={(text) => setFieldValue("descriptionAr", text)}
+                />
+
+                {errors?.descriptionAr && touched?.descriptionAr && (
+                  <FormHelperText>{t(errors?.descriptionAr)}</FormHelperText>
+                )}
+              </FormControl>
             </div>
 
             <div>

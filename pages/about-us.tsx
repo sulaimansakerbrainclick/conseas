@@ -66,7 +66,6 @@ export default function AboutUs({
 
   const { list } = welcomeSection;
 
-  console.log("test", "page", page);
   return (
     <AppTemplate
       header={<Header services={mainServices} />}

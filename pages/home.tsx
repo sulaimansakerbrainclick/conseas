@@ -76,7 +76,7 @@ export default function Home({
         <ReasonsFor data={reasonsSection} />
       </div>
 
-      <div className="relative mb-30 lg:mb-35">
+      <div className="relative mb-30">
         <div className="container">
           <Testimonials data={testimonialsSection} testimonials={testimonials} />
         </div>
@@ -91,7 +91,7 @@ export default function Home({
         />
       </div>
 
-      <div className="container lg:mb-30">
+      <div className="container mb-30">
         <BestNation data={bestInNationSection} />
       </div>
     </AppTemplate>

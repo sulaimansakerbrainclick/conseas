@@ -27,7 +27,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
 
   return (
     <div
-      className={classNames("h-full basis-1/2 lg:basis-1/6 p-2 lg:p-4", {
+      className={classNames("h-full basis-1/2 lg:basis-1/4 xl:basis-1/6 p-2 lg:p-4", {
         [styles.hovered]: hovered,
         [styles.notHovered]: !hovered,
       })}

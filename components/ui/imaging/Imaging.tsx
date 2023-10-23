@@ -13,10 +13,10 @@ const Imaging = ({ data }: { data: Section & { list: SectionItem[] } }) => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col items-center lg:mb-8">
+      <div className="flex flex-col items-center mb-8">
         <div className="mb-1 text-lg">{isRtl ? textAr : textEn}</div>
 
-        <h2 className="text-4xl uppercase mb-8">{isRtl ? titleAr : titleEn}</h2>
+        <h2 className="text-4xl uppercase">{isRtl ? titleAr : titleEn}</h2>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 lg:mb-6">

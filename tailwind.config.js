@@ -10,7 +10,9 @@ module.exports = {
       sm: "640px",
       md: "768px",
       lg: "1024px",
-      xl: "1280px",
+      "1lg": "1150px",
+      xl: "1200px",
+      "1xl": "1300px",
       "2xl": "1536px",
       "3xl": "1900px",
     },
@@ -43,7 +45,10 @@ module.exports = {
       padding: {
         DEFAULT: "var(--container-padding)",
         sm: "var(--container-padding)",
+        md: "var(--container-padding)",
+        lg: "var(--container-padding)",
         xl: "var(--container-padding)",
+        "2xl": "var(--container-padding)",
       },
     },
     extend: {
