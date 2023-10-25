@@ -6,7 +6,7 @@ export async function sign(payload: any, secret: string): Promise<string> {
 
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-    .setExpirationTime(`${Number(process.env.TOEKN_EXPIRE_TIME_IN_SECONDS) + 60}s`)
+    .setExpirationTime(`${Number(process.env.TOEKN_EXPIRE_TIME_IN_SECONDS) + 60}m`)
     .setIssuedAt(iat)
     .setNotBefore(iat)
     .sign(new TextEncoder().encode(secret));

@@ -66,14 +66,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const html = `Reset password link: ${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${forgetPasswordToken.token}`;
 
     await sendEmail({
-      from: `<${process.env.EMAIL_INFO_USERNAME}>`,
+      from: `<${process.env.EMAIL_SUPPORT_USERNAME}>`,
       to: body.email,
       subject: "Conseas account verify link",
       text: "",
       html,
       auth: {
-        user: process.env.EMAIL_INFO_USERNAME,
-        pass: "$_Y)bI]i!kRQ",
+        user: process.env.EMAIL_SUPPORT_USERNAME,
+        pass: sup#Con42,
       },
     });
 

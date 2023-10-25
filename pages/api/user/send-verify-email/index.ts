@@ -69,14 +69,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
     await sendEmail({
-      from: `<${process.env.EMAIL_INFO_USERNAME}>`,
+      from: `<${process.env.EMAIL_SUPPORT_USERNAME}>`,
       to: user.email,
       subject: "Conseas account verify link",
       text: "Email verify link",
       html: `Email verify link: ${process.env.NEXT_PUBLIC_APP_URL}/user/email-verify/${emailToken.token}`,
       auth: {
-        user: process.env.EMAIL_INFO_USERNAME,
-        pass: "$_Y)bI]i!kRQ",
+        user: process.env.EMAIL_SUPPORT_USERNAME,
+        pass: sup#Con42,
       },
     });
 
