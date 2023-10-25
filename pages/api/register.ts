@@ -112,7 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         html: `Email verify link: ${process.env.NEXT_PUBLIC_APP_URL}/user/email-verify/${emailToken.token}`,
         auth: {
           user: process.env.EMAIL_SUPPORT_USERNAME,
-          pass: sup#Con42,
+          pass: "sup#Con42",
         },
       });
     } catch {}

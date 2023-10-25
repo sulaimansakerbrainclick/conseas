@@ -73,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       html,
       auth: {
         user: process.env.EMAIL_SUPPORT_USERNAME,
-        pass: sup#Con42,
+        pass: "sup#Con42",
       },
     });
 
