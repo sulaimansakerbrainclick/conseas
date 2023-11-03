@@ -36,7 +36,7 @@ const ChartCardList = ({
 
         const countryCurrency = isUaeCountryCode
           ? CountryCurrency.UnitedArabEmirates
-          : CountryCurrency.UnitedArabEmirates;
+          : CountryCurrency.USA;
 
         return (
           <div key={id} className="basis-1/3">

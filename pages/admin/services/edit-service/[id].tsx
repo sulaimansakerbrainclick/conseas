@@ -64,8 +64,8 @@ export default function EditService({
         onSubmit={handleSubmit}
         initialValues={{
           ...service,
-          priceUSD: price?.unit_amount || 0,
-          priceAED: price?.currency_options?.aed?.unit_amount || 0,
+          priceUSD: (price?.unit_amount || 0) / 100,
+          priceAED: (price?.currency_options?.aed?.unit_amount || 0) / 100,
           parentId: service.parentId || "",
         }}
       />

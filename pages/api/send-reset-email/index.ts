@@ -68,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     await sendEmail({
       from: `<${process.env.EMAIL_SUPPORT_USERNAME}>`,
       to: body.email,
-      subject: "Conseas account verify link",
+      subject: "Conseas account reset link",
       text: "",
       html,
       auth: {

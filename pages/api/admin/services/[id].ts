@@ -46,6 +46,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return getEnhancedRes(res, 400, "Invalid service");
     }
 
+    if (body.parentId === service.parentId) {
+      return getEnhancedRes(res, 400, "Parent should not be the same");
+    }
+
     let product;
     let price;
 
@@ -54,25 +58,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       const oldPrice = product.default_price;
 
-      await stripe.prices.update(oldPrice as string, {
-        active: false,
-      });
-
-      product = await stripe.products.create({
-        name: body.nameEn,
-        default_price_data: {
-          currency: "USD",
-          unit_amount: body.priceUSD * 100,
-          currency_options: {
-            aed: {
-              unit_amount: body.priceAED * 100,
-            },
+      price = await stripe.prices.create({
+        product: service.stripeProductId,
+        currency: "USD",
+        unit_amount: body.priceUSD * 100,
+        currency_options: {
+          aed: {
+            unit_amount: body.priceAED * 100,
           },
         },
+        expand: ["currency_options"],
       });
 
-      price = await stripe.prices.retrieve(product.default_price as string, {
-        expand: ["currency_options"],
+      product = await stripe.products.update(service.stripeProductId, {
+        name: body.nameEn,
+        default_price: price.id,
+      });
+
+      await stripe.prices.update(oldPrice as string, {
+        active: false,
       });
     }
 
