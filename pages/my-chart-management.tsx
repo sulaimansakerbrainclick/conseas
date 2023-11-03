@@ -27,11 +27,13 @@ export default function MyChartManagement({
   appSettings,
   charts,
   countryCode,
+  ip,
 }: {
   mainServices: Service[];
   appSettings: AppSettingFormValues;
   charts: (Chart & { prices: ChartPrice[] })[];
   countryCode: string | null;
+  ip: number;
 }) {
   const { t } = useTranslation("common");
 
@@ -103,6 +105,7 @@ export default function MyChartManagement({
           )}
         </div>
 
+        {ip}
         <ChartCardList
           data={charts}
           onSubscribeClick={handleSubscribeClick}
@@ -122,6 +125,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
     settingService.geSettings(),
     chartService.user.getAllCharts(),
     getCountryCode(ip),
+    ip,
   ]);
 
   return {
@@ -131,6 +135,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
       charts: result[2].data.data,
       countryCode: result[3],
       session: req.session,
+      ip: ip || "no ip",
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };
