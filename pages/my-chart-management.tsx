@@ -125,7 +125,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
     serviceService.common.getMainServices(),
     settingService.geSettings(),
     chartService.user.getAllCharts(),
-    getCountryCode(ip),
+    // getCountryCode(ip),
   ]);
 
   return {
@@ -133,7 +133,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
       mainServices: result[0].data.data,
       appSettings: result[1].data.data,
       charts: result[2].data.data,
-      countryCode: result[3],
+      // countryCode: result[3],
       session: req.session,
       ip: ip || "no ip",
       ...(await serverSideTranslations(locale, ["common"])),
