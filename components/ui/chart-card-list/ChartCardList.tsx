@@ -40,6 +40,7 @@ const ChartCardList = ({
 
         return (
           <div key={id} className="basis-1/3">
+            {isUaeCountryCode.toString()}
             <div className="h-full flex flex-col justify-between bg-white py-9 px-6.5 border border-solid rounded-sm border-neutral-200 shadow-2xl mx-10 hover:cursor-pointer hover:scale-110 transition-all">
               <div className="grow">
                 <div className="text-center font-bold text-4xl text-color-1 mb-1.5">
