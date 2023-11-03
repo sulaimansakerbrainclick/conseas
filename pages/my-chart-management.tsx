@@ -21,6 +21,7 @@ import getCountryCode from "@/utils/getCountryCode";
 import Router from "next/router";
 import Links from "@/enums/Links";
 import links from "@/links/links";
+import requestIp from "request-ip";
 
 export default function MyChartManagement({
   mainServices,
@@ -118,14 +119,13 @@ export default function MyChartManagement({
 }
 
 export const getServerSideProps = withIronSessionSsr(async function ({ locale, req, params }: any) {
-  const forwarded = req.headers["x-forwarded-for"];
-  const ip = typeof forwarded === "string" ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
+  const ip = requestIp.getClientIp(req);
 
   const result = await Promise.all([
     serviceService.common.getMainServices(),
     settingService.geSettings(),
     chartService.user.getAllCharts(),
-    // getCountryCode(ip),
+    getCountryCode(ip),
   ]);
 
   return {
