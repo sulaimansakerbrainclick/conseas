@@ -118,13 +118,14 @@ export default function MyChartManagement({
 }
 
 export const getServerSideProps = withIronSessionSsr(async function ({ locale, req, params }: any) {
-  const ipAddress = req.connection.remoteAddress; // This will give you the client's IP address
+  const forwarded = req.headers["x-forwarded-for"];
+  const ip = typeof forwarded === "string" ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
 
   const result = await Promise.all([
     serviceService.common.getMainServices(),
     settingService.geSettings(),
     chartService.user.getAllCharts(),
-    getCountryCode(ipAddress),
+    getCountryCode(ip),
   ]);
 
   return {
@@ -134,7 +135,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({ locale, r
       charts: result[2].data.data,
       countryCode: result[3],
       session: req.session,
-      ip: ipAddress || "no ip",
+      ip: ip || "no ip",
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };
