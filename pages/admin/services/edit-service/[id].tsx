@@ -28,10 +28,7 @@ export default function EditService({
 
   const price = JSON.parse(service.stripePriceResponse as string) as Stripe.Response<Stripe.Price>;
 
-  const handleSubmit = async (
-    { imageFile, whiteImageFile, ...values }: ServiceFormValues,
-    { setSubmitting }: FormikHelpers<ServiceFormValues>
-  ) => {
+  const handleSubmit = async ({ imageFile, whiteImageFile, ...values }: ServiceFormValues) => {
     let image;
 
     if (imageFile) {

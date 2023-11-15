@@ -33,17 +33,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return getEnhancedRes(res, 400, "Invalid email or password");
     }
 
-    if (isValidPassword) {
-      const { password, ...userWithoutPass } = user;
+    const { password, ...userWithoutPass } = user;
 
-      const token = await generateAuthToken(userWithoutPass);
+    const token = await generateAuthToken(userWithoutPass);
 
-      const result = {
-        user: userWithoutPass,
-        token: `bearer ${token}`,
-      };
+    const result = {
+      user: userWithoutPass,
+      token: `bearer ${token}`,
+    };
 
-      return getEnhancedRes(res, 200, "Logged in successfully", result);
-    }
+    return getEnhancedRes(res, 200, "Logged in successfully", result);
   }
 }

@@ -14,6 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     let user = await prisma.user.findFirst({
       where: {
         id: decoded!.id,
+        isActive: true,
         deletedAt: null,
       },
     });

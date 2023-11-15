@@ -22,6 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       where: {
         email: body.email,
         deletedAt: null,
+        isActive: true,
       },
     });
 

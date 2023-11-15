@@ -27,6 +27,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (method === "PUT") {
+    debugger;
+
     const body: ServiceFormValues = req.body;
 
     const error = await validate(serviceSchema, body);
@@ -46,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return getEnhancedRes(res, 400, "Invalid service");
     }
 
-    if (body.parentId === service.parentId) {
+    if (body.parentId === service.id) {
       return getEnhancedRes(res, 400, "Parent should not be the same");
     }
 
@@ -116,7 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       },
       data: {
         nameEn: body.nameEn,
-        nameAr: body.nameEn,
+        nameAr: body.nameAr,
         parentId: body.parentId,
         shortDescriptionEn: body.shortDescriptionEn,
         shortDescriptionAr: body.shortDescriptionAr,
