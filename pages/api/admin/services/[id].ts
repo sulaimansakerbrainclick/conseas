@@ -27,8 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (method === "PUT") {
-    debugger;
-
     const body: ServiceFormValues = req.body;
 
     const error = await validate(serviceSchema, body);

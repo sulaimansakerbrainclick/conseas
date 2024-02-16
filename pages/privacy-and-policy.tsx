@@ -14,6 +14,7 @@ import useIsRtl from "@/components/hooks/useIsRtl";
 import settingService from "@/services/settingService";
 import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSettingsForm";
 import PageId from "@/enums/PageId";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function PrivacyAndPolicy({
   mainServices,
@@ -36,6 +37,7 @@ export default function PrivacyAndPolicy({
       <div className="pt-30 lg:pt-50 mb-16 container">
         <div dangerouslySetInnerHTML={{ __html: isRtl ? page.textAr : page.textEn }} />
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }

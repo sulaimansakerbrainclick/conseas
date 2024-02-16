@@ -18,6 +18,7 @@ import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSe
 import settingService from "@/services/settingService";
 import ServiceCard from "@/components/ui/service-card/ServiceCard";
 import SectionId from "@/enums/SectionId";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function Home({
   mainServices,
@@ -90,6 +91,7 @@ export default function Home({
       <div className="container mb-30">
         <ReasonsFor data={reasonsSection} />
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }

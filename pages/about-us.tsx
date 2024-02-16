@@ -25,6 +25,7 @@ import useIsRtl from "@/components/hooks/useIsRtl";
 import pageService from "@/services/pageService";
 import PageId from "@/enums/PageId";
 import SectionId from "@/enums/SectionId";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function AboutUs({
   sections,
@@ -118,6 +119,7 @@ export default function AboutUs({
           initialValues={{ name: "", email: "", subject: "", phone: "", message: "" }}
         />
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }

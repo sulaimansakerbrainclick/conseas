@@ -23,6 +23,7 @@ import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSe
 import testimonialService from "@/services/testimonialService";
 import appointmentTypeService from "@/services/appointmentTypeService";
 import SectionId from "@/enums/SectionId";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function Home({
   sections,
@@ -94,6 +95,7 @@ export default function Home({
       <div className="container mb-30">
         <BestNation data={bestInNationSection} />
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }

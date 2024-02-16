@@ -16,6 +16,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import settingService from "@/services/settingService";
 import { AppSettingFormValues } from "@/components/forms/app-settings-form/AppSettingsForm";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function Home({
   mainServices,
@@ -60,6 +61,7 @@ export default function Home({
           </div>
         </div>
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }

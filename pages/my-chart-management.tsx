@@ -22,6 +22,7 @@ import Router from "next/router";
 import Links from "@/enums/Links";
 import links from "@/links/links";
 import requestIp from "request-ip";
+import WhatsAppButton from "@/components/reusable/WhatsAppButton/WhatsAppButton";
 
 export default function MyChartManagement({
   mainServices,
@@ -111,6 +112,7 @@ export default function MyChartManagement({
           countryCode={countryCode}
         />
       </div>
+      <WhatsAppButton/>
     </AppTemplate>
   );
 }
